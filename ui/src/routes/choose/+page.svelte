@@ -23,7 +23,7 @@
         try {
             loading=true
             let response = await axios.post("http://localhost:4000/scrape/get-results/",JSON.stringify(requestBody),{headers});
-             res = response.data;
+             res = await response.data;
             console.log(res);
         } catch (e) {
             console.log(e);
