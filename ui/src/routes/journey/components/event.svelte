@@ -24,7 +24,7 @@
         let hours = parseInt(time.hours);
         let minutes = parseInt(time.minutes);
         let totalMinutes = hours * 60 + minutes;
-        return (totalMinutes / (24 * 60)) * 100;
+        return (totalMinutes / (24 * 60)) * 200;
     }
     $: heightofdiv = timetopx(card.duration);
 </script>

@@ -2,6 +2,7 @@
     import CalendarTimeline from "./components/calendartimeline.svelte";
     import { onMount } from "svelte";
     import Cookies from "js-cookie";
+    import { json } from "@sveltejs/kit";
 
     let eventname = "";
     let cards = [
@@ -161,55 +162,19 @@
         };
 
         calenderHeight = getcalendarheight();
-        // const llmData = await fetch(
-        //     "http://localhost:4000/llm/get-suggestions",
-        //     {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             Authorization: Cookies.get("user"),
-        //         },
-        //         body: JSON.stringify(data),
-        //     },
-        // );
-        // const llm = await llmData.json();
-        suggestions = {
-            places: [
-                {
-                    placeName: "Sanjay Gandhi National Park",
-                    startTime: {
-                        hours: "10",
-                        minutes: "00",
-                    },
-                    duration: {
-                        hours: "3",
-                        minutes: "00",
-                    },
+        const llmData = await fetch(
+            "http://localhost:4000/llm/do-magic",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: Cookies.get("user"),
                 },
-                {
-                    placeName: "Elephanta Caves",
-                    startTime: {
-                        hours: "13",
-                        minutes: "00",
-                    },
-                    duration: {
-                        hours: "2",
-                        minutes: "30",
-                    },
-                },
-                {
-                    placeName: "Gateway of India",
-                    startTime: {
-                        hours: "16",
-                        minutes: "00",
-                    },
-                    duration: {
-                        hours: "1",
-                        minutes: "30",
-                    },
-                },
-            ],
-        }.places;
+                body: JSON.stringify({jsonData:(data)}),
+            },
+        );
+        const llm = await llmData.json();
+        suggestions = llm.places;
     });
     function numtoMonth(num: any) {
         switch (num) {
@@ -262,11 +227,7 @@
         {/each}
         <!-- <h2 class="card-title font-bold">date here</h2> -->
     </div>
-    <CalendarTimeline
-        {cards}
-        height={calenderHeight}
-        {arrivalFlight}
-        {departureFlight}
+    <CalendarTimeline {cards} height={calenderHeight} {arrivalFlight} {departureFlight}
     />
     <div class="mx-10 suggestions">
         {#each suggestions as suggestion}
