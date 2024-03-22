@@ -1,5 +1,8 @@
 import puppeteer from "puppeteer-extra";
 
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
+
 function constructUrl(cityCode, checkinDate, checkoutDate) {
   const baseUrl =
     "https://www.makemytrip.com/hotels/hotel-listing/?_uCurrency=INR&checkin=";
@@ -20,7 +23,7 @@ console.log(url);
 
 const getHotelsdata = async () => {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     defaultViewport: null,
   });
 
@@ -46,6 +49,7 @@ const getHotelsdata = async () => {
 
     console.log(hotelz);
   }
+  await browser.close();
 };
 
 getHotelsdata();
