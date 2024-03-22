@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 // import fs from 'fs';
 
 const anthropic = new Anthropic({
-  apiKey: "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",
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 export const doMagic = async (
