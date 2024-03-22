@@ -85,11 +85,11 @@
             "May",
             "June",
             "July",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
         ];
         return months[number - 1];
     }
@@ -182,7 +182,4 @@
             </div>
         {/if}
     </div>
-{/if}
-{#if i==5}
-<p>hello</p>
 {/if}

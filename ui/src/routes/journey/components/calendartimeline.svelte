@@ -69,17 +69,17 @@
             minutes: "30",
         },
     }
-    export let departureFlight = {
-        startdate: "1 Jan",
-        starttime: {
-            hours: "2",
-            minutes: "00",
-        },
-        duration: {
-            hours: "10",
-            minutes: "30",
-        },
-    }
+    // export let departureFlight = {
+    //     startdate: "1 Jan",
+    //     starttime: {
+    //         hours: "2",
+    //         minutes: "00",
+    //     },
+    //     duration: {
+    //         hours: "10",
+    //         minutes: "30",
+    //     },
+    // }
 
     function handleDragStart(event: any, cardId: any) {
         event.dataTransfer.setData("cardId", cardId.toString());
