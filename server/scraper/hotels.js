@@ -1,4 +1,3 @@
-import { ServerHeartbeatFailedEvent } from "mongodb";
 import puppeteer from "puppeteer-extra";
 
 function constructUrl(cityCode, checkinDate, checkoutDate) {
