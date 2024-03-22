@@ -55,6 +55,7 @@ export const getHotelsdata = async (
 
     console.log(hotelz);
   }
+  console.log(`totalData: ${totalData}`);
   await saveHotelData(totalData);
 
   await browser.close();

@@ -10,6 +10,7 @@ export const saveHotelData = async (hotels_data) => {
     }
 
     // Write the new data to the file
+    console.log(hotels);
     fs.writeFileSync('hotels.json', JSON.stringify(hotels)); 
     console.log('Hotel Data saved');
 }

@@ -1,11 +1,11 @@
-import express from "express"
 import dotenv from 'dotenv'
+dotenv.config()
+import express from "express"
 import mongoose from "mongoose"
 import cors from "cors"
 import bodyParser from "body-parser"
 import loginRoute from "./routes/userRoute.js"
 let app = express()
-dotenv.config()
 const corsOption = {
     origin: ['http://localhost:5173'],
 }
