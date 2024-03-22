@@ -39,6 +39,7 @@ export const getHotelsdata = async (
   });
 
   const hotel_items = await page.$$("div.hotelTileDt");
+  let gotHotels = 0;
   let totalData = []
   for (const items of hotel_items) {
     // const something = await flight.evaluate(el => el.innerHTML)
@@ -54,6 +55,10 @@ export const getHotelsdata = async (
     totalData.push(hotelz)
 
     console.log(hotelz);
+    gotHotels += 1
+    if (gotHotels > 3) {
+      break;
+    }
   }
   console.log(`totalData: ${totalData}`);
   await saveHotelData(totalData);
