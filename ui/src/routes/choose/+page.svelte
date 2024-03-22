@@ -2,17 +2,20 @@
     import { onMount } from "svelte"
     import axios from "axios"
     import Cookies from "js-cookie"
+    import { goto } from "$app/navigation";
     let res:any
     let loading:boolean
+    let selectedData:any=[{},{},{}]
+    let headers = {
+            "Content-Type": "application/json",
+            Authorization:Cookies.get('user') ,
+        };
+        let selectedDataLoading:boolean=false
     onMount(async () => {
         const dataString = localStorage.getItem("answers");
         if (!dataString) return;
 
         const data = JSON.parse(dataString);
-        let headers = {
-            "Content-Type": "application/json",
-            Authorization:Cookies.get('user') ,
-        };
         const requestBody = {
             date: data.date,
             outDate: data.outDate,
@@ -32,10 +35,48 @@
             loading=false;
         }
     });
+    let sendSelectedOne=async()=>{
+        try{
+            selectedDataLoading=true
+            await axios.post('http://localhost:4000/trip/make-trip/',selectedData,{headers})
+        }
+        catch(e){
+            console.log(e);
+        }
+        finally{
+            selectedDataLoading=false
+            goto('/journey')
+        }
+        
+    }
 </script>
 
 <main>
     {#if loading==false}
+    <div class="p-10 flex flex-col items-center gap-8">
+        <p class="text-3xl">List of Hotels</p>
+        <div class="flex flex-row justify-center gap-8">
+            {#each res?.hotels as data}
+                <div class="card bg-base-100 w-96 shadow-xl flex flex-col justify-center items-center p-6 gap-2">
+                    <div class="flex flex-row gap-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 16 16"><path fill="currentColor" d="M3 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm1 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/></svg>
+                        <div class="flex flex-col gap-2">
+                            <p class="text-2xl">{data.hotelName}</p>
+                            <p>{data.rating}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-row gap-10 items-center">
+                        <p>{data.location}</p>
+                        <p class="text-2xl">{data.hotelPrice}</p>
+                    </div>
+                    <div class="flex flex-row gap-8">
+                        <a href={`https://${data.link}`} target="_blank"><button class="btn btn-outline btn-primary">Link</button></a>
+                        <button class="btn btn-outline btn-accent" on:click={()=>selectedData[0]=data}>Choose</button>
+                    </div>
+                </div>
+            {/each}
+        </div>
+    </div>
     <div class="p-10 flex flex-col items-center gap-8">
         <p class="text-3xl">Home to Destination Flights</p>
         <div class="flex flex-row justify-center gap-8">
@@ -52,7 +93,7 @@
                         <p>{data.flightDuration}</p>
                         <p>{data.stopInfo}</p>
                         <p class="text-3xl">{data.flightPrice}</p>
-                      <button class="btn btn-outline btn-accent">choose</button>
+                      <button class="btn btn-outline btn-accent" on:click={()=>selectedData[1]=data}>choose</button>
                     </div>
                 </div>
             {/each}
@@ -74,35 +115,25 @@
                         <p>{data.flightDuration}</p>
                         <p>{data.stopInfo}</p>
                         <p class="text-3xl">{data.flightPrice}</p>
-                      <button class="btn btn-outline btn-accent">choose</button>
+                      <button class="btn btn-outline btn-accent" on:click={()=>selectedData[2]=data}>choose</button>
                     </div>
                 </div>
             {/each}
         </div>
     </div>
-    <div class="p-10 flex flex-col items-center gap-8">
-        <p class="text-3xl">List of Hotels</p>
-        <div class="flex flex-row justify-center gap-8">
-            {#each res?.hotels as data}
-                <div class="card bg-base-100 w-96 shadow-xl flex flex-col justify-center items-center p-6 gap-2">
-                    <div class="flex flex-row gap-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 16 16"><path fill="currentColor" d="M3 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm1 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/></svg>
-                        <div class="flex flex-col gap-2">
-                            <p class="text-2xl">{data.hotelName}</p>
-                            <p>{data.rating}</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-row gap-10 items-center">
-                        <p>{data.location}</p>
-                        <p class="text-2xl">{data.hotelPrice}</p>
-                    </div>
-                    <div class="flex flex-row gap-8">
-                        <a href={`https://${data.link}`} target="_blank"><button class="btn btn-outline btn-primary">Link</button></a>
-                        <button class="btn btn-outline btn-accent">Choose</button>
-                    </div>
-                </div>
-            {/each}
-        </div>
+    <div class="flex flex-row justify-center">
+        {#if selectedDataLoading==false}
+        <button class="btn btn-wide btn-outline btn-secondary" on:click={sendSelectedOne}>Confirm</button>
+        {/if}
+        {#if selectedData==true}
+        <button class="btn">
+            <span class="loading loading-spinner"></span>
+            loading
+          </button>
+        {/if}
     </div>
+    {/if}
+    {#if loading==true}
+    <p>loading........</p>
     {/if}
 </main>
