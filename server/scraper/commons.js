@@ -1,4 +1,4 @@
-module.exports.waitForProccessing = async (time=PROCESSING_WAIT) => {
+export const waitForProccessing = async (time=PROCESSING_WAIT) => {
     await new Promise(resolve => setTimeout(resolve, time));
 }
 
