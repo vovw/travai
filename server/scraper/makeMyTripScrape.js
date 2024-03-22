@@ -1,13 +1,14 @@
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-const { saveFlightData } = require('./saveFlightData');
-const { waitForProccessing,USER_AGENT,PROCESSING_WAIT,getDateFormatted } = require('./commons');
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import { saveFlightData } from './saveFlightData';
+import { waitForProcessing, USER_AGENT, PROCESSING_WAIT, getDateFormatted } from './commons';
+
 
 // const width = 960;
 // const height = 960;
 
 puppeteer.use(StealthPlugin());
-module.exports.getMMTFlightData = async (
+export const getMMTFlightData = async (
     placeFrom,
     placeTo,
     dateDay,
