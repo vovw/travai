@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer-extra";
-
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import { saveHotelData } from "./saveHotelData.js";
 puppeteer.use(StealthPlugin());
 
 function constructUrl(cityCode, checkinDate, checkoutDate) {
@@ -18,10 +18,15 @@ function constructUrl(cityCode, checkinDate, checkoutDate) {
   return completeUrl;
 }
 
-const url = constructUrl("CTBOM", "03272024", "03282024");
-console.log(url);
+export const getHotelsdata = async (
+  cityCode,
+  checkinDate,
+  checkoutDate
+) => {
+  
+  const url = constructUrl(cityCode, checkinDate, checkoutDate);
+  console.log(url);
 
-const getHotelsdata = async () => {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
@@ -34,7 +39,7 @@ const getHotelsdata = async () => {
   });
 
   const hotel_items = await page.$$("div.hotelTileDt");
-
+  let totalData = []
   for (const items of hotel_items) {
     // const something = await flight.evaluate(el => el.innerHTML)
     // console.log(something);
@@ -46,10 +51,11 @@ const getHotelsdata = async () => {
       const link = el.querySelector("a").getAttribute("href").slice(2);
       return { hotelName, hotelPrice, rating, link, location };
     });
+    totalData.push(hotelz)
 
     console.log(hotelz);
   }
+  await saveHotelData(totalData);
+
   await browser.close();
 };
-
-getHotelsdata();

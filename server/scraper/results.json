@@ -1,0 +1,9 @@
+{
+    "source" : "Mumbai",
+    "destination" : "Delhi",
+    "DateStart" : "04/04/2024",
+    "DateEnd" : "10/04/2024",
+    "hotels" : [],
+    "depFlights" : [],
+    "retFlights" : []
+}
