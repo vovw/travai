@@ -5,13 +5,34 @@
     };
     import flight from "./flight.svg";
     export let showflighticon = false;
-    export let height: string | number | undefined = "100";
     // $: console.log("height:", height, event);
+    export let card = {
+        id: 1,
+        title: "Event 1",
+        starttime: {
+            hours: "22",
+            minutes: "00",
+        },
+        duration: {
+            hours: "10",
+            minutes: "30",
+        },
+        y: "",
+    };
+
+    function timetopx(time: any) {
+        let hours = parseInt(time.hours);
+        let minutes = parseInt(time.minutes);
+        let totalMinutes = hours * 60 + minutes;
+        return (totalMinutes / (24 * 60)) * 100;
+    }
 </script>
 
 <div
     class="card-body items-center text-center"
-    style='height: {height}px; background-color: {color === "base" ? "#282a36" : "#282017"}; '
+    style="height: {timetopx(card.duration)}px; background-color: {color === 'base'
+        ? '#282a36'
+        : '#282017'}; "
 >
     {#if showflighticon}
         <img src={flight} alt="event" class="w-100" style="height: 50px;" />
@@ -30,7 +51,7 @@
     }
 
     .card-title {
-        margin: 0; 
+        margin: 0;
         height: 100%;
     }
 </style>

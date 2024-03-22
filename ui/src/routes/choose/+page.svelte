@@ -1,4 +1,30 @@
-<script>
+<script lang="ts">
+    import { onMount } from 'svelte';
+
+    onMount(async () => {
+        const dataString = localStorage.getItem('answers');
+        if (!dataString) return;
+
+        const data = JSON.parse(dataString);
+
+        const requestBody = {
+            date: data.date,
+            outDate: data.outDate,
+            placeFrom: data.placeFrom,
+            placeTo: data.placeTo,
+        };
+
+        const req = await fetch('http://localhost:4000/scrape/get-results', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+        });
+
+        const res = await req.json();
+        console.log(res);
+    });
 </script>
 
 <main>

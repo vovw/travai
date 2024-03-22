@@ -5,15 +5,10 @@ import { getDateFormatted,convertDateFormat } from "./commons.js";
 import { getYatraFlightData } from "./yatraScrape.js";
 import { clearPastData } from "./clearPastData.js";
 
-const outDate = "29 March 2024"
-const date = '28 March 2024';
-const [citycode, checkinDate, checkoutDate] = ["CTBOM",convertDateFormat(date),convertDateFormat(outDate)]
-const placeFrom = 'Mumbai';
-const placeTo = 'Pune';
-const [ dateDay,dateMonth,dateYear ] = date.split(' ');
-const [ outDateDay,outDateMonth,outDateYear ] = outDate.split(' ');
-
-export const scrape = async () => {
+export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeFrom='Mumbai',placeTo='Pune') => {
+    const [citycode, checkinDate, checkoutDate] = ["CTBOM",convertDateFormat(date),convertDateFormat(outDate)]
+    const [ dateDay,dateMonth,dateYear ] = date.split(' ');
+    const [ outDateDay,outDateMonth,outDateYear ] = outDate.split(' ');
     const result = {
         "source" : placeFrom,
         "destination" : placeTo,
@@ -44,4 +39,4 @@ export const scrape = async () => {
     return result;
 }
 
-scrape()
+// scrape()

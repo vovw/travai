@@ -131,7 +131,7 @@
 
 <div>
     <div style={`height: ${timetopx(arrivalFlight.starttime)}px; width: 100%;`} class='empty-place'></div>
-    <Event event={{ title: "Arrival" }} showflighticon={true} color={"top"} height={timetopx(arrivalFlight.duration)}/>
+    <Event event={{ title: "Arrival" }} showflighticon={true} color={"top"}/>
     <div
         class="canvas h-96"
         on:dragover={handleDragOver}
@@ -150,11 +150,11 @@
                 tabindex="0"
                 style='top: {card.y}px; height: {timetopx(card.duration)}px;'
             >
-                <Event event={{ title: card.title }} showflighticon={false} height={timetopx(card.duration)}/>
+                <Event event={{ title: card.title }} showflighticon={false} {card}/>
             </div>
         {/each}
     </div>
-    <Event event={{ title: "Arrival" }} showflighticon={true} color={"top"} height={timetopx(departureFlight.duration)}/>
+    <Event event={{ title: "Arrival" }} showflighticon={true} color={"top"}/>
 </div>
 
 <style>

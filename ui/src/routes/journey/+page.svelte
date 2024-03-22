@@ -54,6 +54,7 @@
             minutes: "00",
         },
     };
+    let eventstartdate = arrivalFlight.startdate.split(" ")[0];
     let departureFlight = {
         startdate: "21 Jan",
         starttime: {
@@ -110,6 +111,8 @@
         {departureFlight}
     />
     <div class='inputs'>
+        <input type="text" placeholder="Event name" class="input input-bordered input-primary w-full max-w-xs" bind:value={eventname} />
+        From: <input type="number" placeholder="Start date" class="input input-bordered input-primary w-full max-w-xs" bind:value={eventstartdate} />
         <input type="text" placeholder="Type here" class="input input-bordered input-primary w-full max-w-xs" bind:value={eventname} />
         <button class="btn btn-outline btn-success" on:click={addEvent}>Add</button>
     </div>
