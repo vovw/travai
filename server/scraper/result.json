@@ -19,23 +19,23 @@
             "location": "3.0 km drive to T2 - Chhatrapati Shivaji International Airport"
         },
         {
-            "hotelName": "Le Sutra",
-            "hotelPrice": "₹ 10,127",
-            "rating": "Excellent",
-            "link": "www.makemytrip.com/hotels/hotel-details?hotelId=20100713104411502&_uCurrency=INR&checkin=03282024&checkout=03292024&city=CTBOM&country=IN&lat=19.07181&lng=72.82543&locusId=CTBOM&locusType=city&rank=3&reference=hotel&roomStayQualifier=2e0e&rsc=1e2e0e&searchText=CTBOM&viewType=PREMIUM&mtkeys=1999172714400322842",
-            "location": "5.5 km from T1 - Chhatrapati Shivaji International Airport"
+            "hotelName": "HOTEL WEGO",
+            "hotelPrice": "₹ 5,039",
+            "rating": " Very Good",
+            "link": "www.makemytrip.com/hotels/hotel-details?hotelId=201904041746335189&_uCurrency=INR&checkin=03282024&checkout=03292024&city=CTBOM&country=IN&lat=19.11154&lng=72.87804&locusId=CTBOM&locusType=city&rank=3&reference=hotel&roomStayQualifier=2e0e&rsc=1e2e0e&searchText=CTBOM&mtkeys=8683415948149090035",
+            "location": "2.9 km drive to T2 - Chhatrapati Shivaji International Airport"
         },
         {
             "hotelName": "Radisson Blu Mumbai International Airport",
             "hotelPrice": "₹ 8,500",
-            "rating": "Excellent",
+            "rating": " Excellent",
             "link": "www.makemytrip.com/hotels/hotel-details?hotelId=202008061201129632&_uCurrency=INR&checkin=03282024&checkout=03292024&city=CTBOM&country=IN&lat=19.11022&lng=72.87862&locusId=CTBOM&locusType=city&rank=4&reference=hotel&roomStayQualifier=2e0e&rsc=1e2e0e&searchText=CTBOM&viewType=PREMIUM&mtkeys=2952085033693242324",
             "location": "2.7 km drive to T2 - Chhatrapati Shivaji International Airport"
         },
         {
             "hotelName": "MMT Luxe Selections",
             "hotelPrice": "₹ 11,500",
-            "rating": "Excellent",
+            "rating": " Excellent",
             "link": "www.makemytrip.com/hotels/hotel-details?hotelId=201509301253485476&_uCurrency=INR&checkin=03282024&checkout=03292024&city=CTBOM&country=IN&lat=19.09261&lng=72.85434&locusId=CTBOM&locusType=city&rank=5&reference=hotel&roomStayQualifier=2e0e&rsc=1e2e0e&searchText=CTBOM&viewType=LUXE&mtkeys=-9172334309025616564",
             "location": "560 m from T1 - Chhatrapati Shivaji International Airport"
         }
@@ -56,7 +56,7 @@
             "flightTime": "08:10",
             "flightDuration": "06 h 50 m ",
             "stopInfo": "1 stop via New Delhi ",
-            "flightPrice": "11,567",
+            "flightPrice": "12,145",
             "flightLink": "https://www.makemytrip.com/flight/search?itinerary=BOM-PNQ-28/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
             "site": "makemytrip",
             "flightDate": "28/03/2024"
@@ -80,26 +80,6 @@
             "flightLink": "https://www.makemytrip.com/flight/search?itinerary=BOM-PNQ-28/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
             "site": "makemytrip",
             "flightDate": "28/03/2024"
-        },
-        {
-            "flightName": "Vistara UK 930, UK 935",
-            "flightTime": "00:35",
-            "flightDuration": "17 h 05 m ",
-            "stopInfo": "1 stop via New Delhi ",
-            "flightPrice": "12,882",
-            "flightLink": "https://www.makemytrip.com/flight/search?itinerary=BOM-PNQ-28/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
-            "site": "makemytrip",
-            "flightDate": "28/03/2024"
-        },
-        {
-            "flightName": "Vistara UK 954, UK 935",
-            "flightTime": "00:35",
-            "flightDuration": "18 h 45 m ",
-            "stopInfo": "1 stop via New Delhi ",
-            "flightPrice": "12,882",
-            "flightLink": "https://www.makemytrip.com/flight/search?itinerary=BOM-PNQ-28/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
-            "site": "makemytrip",
-            "flightDate": "28/03/2024"
         }
     ],
     "retFlights": [
@@ -114,51 +94,31 @@
             "flightDate": "29/03/2024"
         },
         {
-            "flightName": "Air India AI 854, AI 887",
-            "flightTime": "09:15",
-            "flightDuration": "11 h 20 m ",
-            "stopInfo": "1 stop via New Delhi ",
-            "flightPrice": "13,293",
+            "flightName": "IndiGo, Air India 6E 819, AI 614",
+            "flightTime": "09:20",
+            "flightDuration": "04 h 30 m ",
+            "stopInfo": "1 stop via Ahmedabad ",
+            "flightPrice": "7,895",
             "flightLink": "https://www.makemytrip.com/flight/search?itinerary=PNQ-BOM-29/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
             "site": "makemytrip",
             "flightDate": "29/03/2024"
         },
         {
-            "flightName": "Vistara UK 974, UK 999",
-            "flightTime": "00:15",
-            "flightDuration": "18 h 40 m ",
-            "stopInfo": "1 stop via New Delhi ",
-            "flightPrice": "13,360",
+            "flightName": "SpiceJet, IndiGo SG 1078, 6E 6794",
+            "flightTime": "00:10",
+            "flightDuration": "05 h 35 m ",
+            "stopInfo": "1 stop via Ahmedabad ",
+            "flightPrice": "8,139",
             "flightLink": "https://www.makemytrip.com/flight/search?itinerary=PNQ-BOM-29/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
             "site": "makemytrip",
             "flightDate": "29/03/2024"
         },
         {
-            "flightName": "Air India AI 9505, AI 9512",
-            "flightTime": "16:35",
-            "flightDuration": "16 h 25 m ",
-            "stopInfo": "2 stop via New Delhi,Lucknow ",
-            "flightPrice": "13,527",
-            "flightLink": "https://www.makemytrip.com/flight/search?itinerary=PNQ-BOM-29/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
-            "site": "makemytrip",
-            "flightDate": "29/03/2024"
-        },
-        {
-            "flightName": "Air India AI 1852, AI 9512",
-            "flightTime": "16:35",
-            "flightDuration": "15 h 45 m ",
-            "stopInfo": "2 stop via New Delhi,Lucknow ",
-            "flightPrice": "13,659",
-            "flightLink": "https://www.makemytrip.com/flight/search?itinerary=PNQ-BOM-29/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
-            "site": "makemytrip",
-            "flightDate": "29/03/2024"
-        },
-        {
-            "flightName": "Air India AI 1852, AI 887",
-            "flightTime": "09:15",
-            "flightDuration": "08 h 25 m ",
-            "stopInfo": "1 stop via New Delhi ",
-            "flightPrice": "14,133",
+            "flightName": "IndiGo 6E 6553, 6E 6794",
+            "flightTime": "00:10",
+            "flightDuration": "08 h 20 m ",
+            "stopInfo": "1 stop via Ahmedabad ",
+            "flightPrice": "9,199",
             "flightLink": "https://www.makemytrip.com/flight/search?itinerary=PNQ-BOM-29/03/2024&tripType=O&paxType=A-1_C-0_I-0&intl=false&cabinClass=E&ccde=IN&lang=eng",
             "site": "makemytrip",
             "flightDate": "29/03/2024"
