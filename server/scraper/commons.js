@@ -1,5 +1,5 @@
-export const PROCESSING_WAIT = 500
-export const waitForProccessing = async (time=500) => {
+export const PROCESSING_WAIT = 1000
+export const waitForProccessing = async (time=1000) => {
     await new Promise(resolve => setTimeout(resolve, time));
 }
 

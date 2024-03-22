@@ -32,17 +32,22 @@ export const getMMTFlightData = async (
         console.log('Page loaded');
 
         // Select the source city
-        const fromCity = await page.$('label[for="fromCity"]');
-        await fromCity.click();
-        await page.waitForSelector('input[placeholder="From"]');
-        await page.type('input[placeholder="From"]', placeFrom);
-        await waitForProccessing()
-        await page.waitForSelector('#react-autowhatever-1-section-0-item-0')
-        await page.click('#react-autowhatever-1-section-0-item-0')
-
+        for (let i = 0; i < 3; i++) {
+            const fromCity = await page.$('label[for="fromCity"]');
+            await fromCity.click();
+            await page.waitForSelector('input[placeholder="From"]');
+            await page.type('input[placeholder="From"]', placeFrom);
+            await waitForProccessing(PROCESSING_WAIT*(i+1))
+            await page.waitForSelector('#react-autowhatever-1-section-0-item-0')
+            await page.click('#react-autowhatever-1-section-0-item-0')
         // Test if the action is successful
-        const fromCityText = await fromCity.evaluate(el => el.querySelector('#fromCity').getAttribute('value'));
-        console.log(`From : ${fromCityText} , ${(fromCityText === placeFrom) ? 'Success' : 'Failed'}`);
+            const fromCityText = await fromCity.evaluate(el => el.querySelector('#fromCity').getAttribute('value'));
+            console.log(`From : ${fromCityText} , ${(fromCityText === placeFrom) ? 'Success' : 'Failed'}`);
+
+            if(fromCityText === placeFrom){
+                break
+            }
+        }
 
         for (let i = 0; i < 3; i++) {
             // Select the destination city
@@ -181,7 +186,7 @@ export const getMMTFlightData = async (
             totalData.push(flightData)
 
             gotFlights += 1
-            if(gotFlights > 5){
+            if(gotFlights > 3){
                 break
             }
         }

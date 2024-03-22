@@ -82,6 +82,7 @@ export const getYatraFlightData = async (
                 // airline and name
                 const flightAirlineEl = await flight.$('.airline-name > span');
                 const flightAirline = await flightAirlineEl.evaluate(el => el.textContent);
+                
                 const flightNameEl = await flight.$('.airline-name > p');
                 const flightName = await flightNameEl.evaluate(el => el.textContent);
                 console.log('Flight : ',flightAirline,flightName)
