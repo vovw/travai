@@ -26,16 +26,17 @@
         let totalMinutes = hours * 60 + minutes;
         return (totalMinutes / (24 * 60)) * 100;
     }
+    $: heightofdiv = timetopx(card.duration);
 </script>
 
 <div
     class="card-body items-center text-center"
-    style="height: {timetopx(card.duration)}px; background-color: {color === 'base'
+    style="height: {heightofdiv}px; background-color: {color === 'base'
         ? '#282a36'
         : '#282017'}; "
 >
     {#if showflighticon}
-        <img src={flight} alt="event" class="w-100" style="height: 50px;" />
+        <img src={flight} alt="event" class="w-100" style="height: 34px;" />
     {:else}
         <h2 class="card-title font-bold">{event.title}</h2>
     {/if}

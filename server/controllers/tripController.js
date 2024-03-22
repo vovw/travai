@@ -22,7 +22,6 @@ export async function makeTrip(req,res){
     try{
         //logic here
         const user = await jwt.verify(req.headers['authorization'],process.env.SECRET)
-        console.log(user)
         console.log({
             userId:user._id,
             depFlight : req.body.depFlight,
@@ -49,6 +48,7 @@ export async function makeTrip(req,res){
 export async function getTrip(req,res){
     try{
         //logic here
+        console.log('auth',req.headers)
         const user = jwt.verify(req.headers['authorization'],process.env.SECRET)
         console.log(user)
         const id = new ObjectId(user._id)

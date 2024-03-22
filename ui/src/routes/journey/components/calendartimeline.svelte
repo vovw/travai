@@ -68,18 +68,18 @@
             hours: "10",
             minutes: "30",
         },
-    }
-    // export let departureFlight = {
-    //     startdate: "1 Jan",
-    //     starttime: {
-    //         hours: "2",
-    //         minutes: "00",
-    //     },
-    //     duration: {
-    //         hours: "10",
-    //         minutes: "30",
-    //     },
-    // }
+    };
+    export let departureFlight = {
+        startdate: "1 Jan",
+        starttime: {
+            hours: "2",
+            minutes: "00",
+        },
+        duration: {
+            hours: "10",
+            minutes: "30",
+        },
+    };
 
     function handleDragStart(event: any, cardId: any) {
         event.dataTransfer.setData("cardId", cardId.toString());
@@ -107,6 +107,7 @@
             // Update starttime properties as strings
             cards[droppedCardIndex].starttime.hours = String(hours);
             cards[droppedCardIndex].starttime.minutes = String(minutes);
+            console.log(cards[droppedCardIndex]);
         }
     }
     function timetopx(time: any) {
@@ -123,15 +124,31 @@
         const percentageOfDay = (totalMinutes / (24 * 60)) * 100; // Calculate percentage of the day
         cards[i].y = String(percentageOfDay); // Convert percentage to string and assign to y property
     }
-
+    $: cardtimes = cards.map((card) => {
+        return timetopx(card.duration);
+    });
+    $: emptyheight = timetopx(arrivalFlight.starttime);
     // console.log(cards);
-
     // $: console.log(cards)
 </script>
 
 <div>
-    <div style={`height: ${timetopx(arrivalFlight.starttime)}px; width: 100%;`} class='empty-place'></div>
-    <Event event={{ title: "Arrival" }} showflighticon={true} color={"top"}/>
+    <div
+        style={`height: ${emptyheight}px; width: 100%;`}
+        class="empty-place"
+    ></div>
+    <Event
+        event={{ title: "Arrival" }}
+        showflighticon={true}
+        color={"top"}
+        card={{
+            duration: arrivalFlight.duration,
+            id: 0,
+            y: "",
+            starttime: arrivalFlight.starttime,
+            title: "",
+        }}
+    />
     <div
         class="canvas h-96"
         on:dragover={handleDragOver}
@@ -148,13 +165,30 @@
                 role="button"
                 aria-grabbed="false"
                 tabindex="0"
-                style='top: {card.y}px; height: {timetopx(card.duration)}px;'
+                style="top: {card.y}px; height: {cardtimes[
+                    cards.indexOf(card)
+                ]}px;"
             >
-                <Event event={{ title: card.title }} showflighticon={false} {card}/>
+                <Event
+                    event={{ title: card.title }}
+                    showflighticon={false}
+                    {card}
+                />
             </div>
         {/each}
     </div>
-    <Event event={{ title: "Arrival" }} showflighticon={true} color={"top"}/>
+    <Event
+        event={{ title: "Arrival" }}
+        showflighticon={true}
+        color={"top"}
+        card={{
+            duration: departureFlight.duration,
+            id: 0,
+            y: "",
+            starttime: departureFlight.starttime,
+            title: "",
+        }}
+    />
 </div>
 
 <style>
@@ -165,7 +199,6 @@
         margin-bottom: 20px;
         position: relative;
         /* padding: 2px; */
-
     }
 
     .card {
