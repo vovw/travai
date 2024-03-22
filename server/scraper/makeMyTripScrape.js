@@ -44,8 +44,10 @@ export const getMMTFlightData = async (
             const fromCityText = await fromCity.evaluate(el => el.querySelector('#fromCity').getAttribute('value'));
             console.log(`From : ${fromCityText} , ${(fromCityText === placeFrom) ? 'Success' : 'Failed'}`);
 
-            if(fromCityText === placeFrom){
+            if(fromCityText.toLowerCase().includes(placeFrom.toLowerCase())){
                 break
+            } else {
+                console.log('Trying again')
             }
         }
 
@@ -63,7 +65,7 @@ export const getMMTFlightData = async (
             const toCityText = await toCity.evaluate(el => el.querySelector('#toCity').getAttribute('value'));
             console.log(`To : ${toCityText} , ${(toCityText === placeTo) ? 'Success' : 'Failed'}`);
 
-            if(toCityText === placeTo){
+            if(toCityText.toLowerCase().includes(placeTo.toLowerCase())){
                 break
             } else{
                 console.log('Trying again')
