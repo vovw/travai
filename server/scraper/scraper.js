@@ -13,7 +13,7 @@ export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeF
         "source" : placeFrom,
         "destination" : placeTo,
         "DateStart" : getDateFormatted(date),
-        "DateEnd" : convertDateFormat(outDate),
+        "DateEnd" : getDateFormatted(outDate),
         "hotels" : [],
         "depFlights" : [],
         "retFlights" : []
