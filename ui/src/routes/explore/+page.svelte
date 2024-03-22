@@ -98,9 +98,9 @@
 {#if i >= 0 && i <= 4}
     <div class="mt-48 flex flex-col items-center justify-center gap-8">
         <p class="text-6xl">{data[i].que}</p>
-        <p class="text-2xl">Your response: {data[i].ans}</p>
+        <!-- <p class="text-2xl">Your response: {data[i].ans}</p> -->
     </div>
-    <div class="absolute bottom-0 mb-96 w-full">
+    <div class="mt-20 mb-96 w-full">
         {#if i == 0 || i == 1 || i == 4}
             <div class="flex flex-row items-center justify-center gap-2">
                 <input
@@ -182,4 +182,7 @@
             </div>
         {/if}
     </div>
+{/if}
+{#if i==5}
+<p>hello</p>
 {/if}
