@@ -1,5 +1,16 @@
-<script>
-    let data = [
+<script lang="ts">
+    type Data = {
+        key: number;
+        que: string;
+        ans: string;
+    };
+    type Data2 = {
+        key: number;
+        que: string;
+        from: string;
+        to: string;
+    };
+    let data: Data[] = [
         {
             key: 0,
             que: "So where do you live?",
@@ -13,8 +24,7 @@
         {
             key: 2,
             que: "Enter the date of flight you want and the date of return flight",
-            from: "",
-            to: "",
+            ans: "",
         },
         {
             key: 3,
@@ -27,11 +37,62 @@
             ans: "",
         },
     ];
-    let i = 0;
-    let onClick = () => {
-        i++;
-        if (i == data.length) console.log(data);
+    const dateDate: Data2 = {
+        key: 2,
+        que: "Enter the date of flight you want and the date of return flight",
+        from: "",
+        to: "",
     };
+    let i = 0;
+    if (typeof window !== "undefined") {
+        window.addEventListener("keydown", (e: KeyboardEvent) => {
+            if (e.key === "Enter") {
+                onClick();
+            }
+        });
+    }
+    let onClick = async () => {
+        i++;
+        if (i == data.length) {
+            console.log(data, dateDate);
+            const dataToSend = {
+                date:
+                    dateDate.from?.split("-")[2] +
+                    " " +
+                    numtoMonth(parseInt(dateDate.from?.split("-")[1])) +
+                    " " +
+                    dateDate.from?.split("-")[0],
+                outDate:
+                    dateDate.to?.split("-")[2] +
+                    " " +
+                    numtoMonth(parseInt(dateDate.to?.split("-")[1])) +
+                    " " +
+                    dateDate.to?.split("-")[0],
+                placeFrom: data[0].ans,
+                placeTo: data[1].ans,
+                
+            };
+            console.log(dataToSend);
+            localStorage.setItem("answers", JSON.stringify(dataToSend));
+        }
+    };
+    function numtoMonth(number: any) {
+        let months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
+        return months[number - 1];
+    }
 </script>
 
 {#if i >= 0 && i <= 4}
@@ -71,7 +132,7 @@
                             type="date"
                             name=""
                             id=""
-                            bind:value={data[2].from}
+                            bind:value={dateDate.from}
                         />
                     </div>
                     <div class="flex flex-col gap-2">
@@ -80,7 +141,7 @@
                             type="date"
                             name=""
                             id=""
-                            bind:value={data[2].to}
+                            bind:value={dateDate.to}
                         />
                     </div>
                 </div>
@@ -121,7 +182,4 @@
             </div>
         {/if}
     </div>
-{/if}
-{#if i==5}
-<p>hello</p>
 {/if}
