@@ -21,7 +21,7 @@ export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeF
     await clearPastData()
     await getHotelsdata(citycode, checkinDate, checkoutDate)
     await getMMTFlightData(placeFrom, placeTo, dateDay, dateMonth, dateYear)
-    await getYatraFlightData(placeFrom, placeTo, getDateFormatted(date))
+    // await getYatraFlightData(placeFrom, placeTo, getDateFormatted(date))
 
     const hotels = fs.readFileSync('hotels.json');
     const flights = fs.readFileSync('flights.json');
@@ -30,7 +30,7 @@ export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeF
     await clearPastData()
 
     await getMMTFlightData(placeTo,placeFrom, outDateDay, outDateMonth, outDateYear)
-    await getYatraFlightData(placeTo, placeFrom, getDateFormatted(outDate))
+    // await getYatraFlightData(placeTo, placeFrom, getDateFormatted(outDate))
     const flights2 = fs.readFileSync('flights.json');
     result.retFlights = await JSON.parse(flights2);
 
