@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
+
     type Data = {
         key: number;
         que: string;
@@ -73,6 +75,7 @@
             };
             console.log(dataToSend);
             localStorage.setItem("answers", JSON.stringify(dataToSend));
+            goto('/choose')
         }
     };
     function numtoMonth(number: any) {
