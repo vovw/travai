@@ -1,7 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
+// import fs from 'fs';
 
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: "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",
 });
 
 export const doMagic = async (
@@ -25,5 +26,6 @@ export const doMagic = async (
       },
     ],
   });
+  // fs.writeFileSync('llm.json', JSON.stringify(msg)); 
   return JSON.parse(msg.content[0].text)
 }

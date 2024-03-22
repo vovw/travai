@@ -16,10 +16,12 @@ app.use(bodyParser.json({ limit: '1.5mb' }))
 app.use(express.json())
 import scrapeRoute from "./routes/scraperRoute.js"
 import tripRoute from "./routes/tripRoute.js"
+import llmRoute from "./routes/llmRoute.js"
 
 app.use("/user",loginRoute)
 app.use("/scrape",scrapeRoute)
 app.use('/trip',tripRoute)
+app.use('/llm',llmRoute)
 
 try{
     mongoose.connect(process.env.MONGODB_URL)

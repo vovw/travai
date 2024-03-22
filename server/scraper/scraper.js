@@ -36,6 +36,10 @@ export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeF
 
     console.log(result);
     fs.writeFileSync('result.json', JSON.stringify(result));
+
+    result.hotels = result.hotels.slice(0, 3);
+    result.depFlights = result.depFlights.slice(0, 3);
+    result.retFlights = result.retFlights.slice(0, 3);
     return result;
 }
 
