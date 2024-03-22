@@ -279,7 +279,7 @@
         {/each}
 
         <div>
-            <button class="btn btn-primary" on:click|preventDefault={}>Save</button>
+            <button class="btn btn-primary">Save</button>
         </div>
     </div>
 </div>
