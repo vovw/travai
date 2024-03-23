@@ -153,16 +153,57 @@
         });
         const llm = await llmData.json();
         suggestions = llm.places;
-        let temp = data.places.map((e:any)=>{
-            return e.placeName
-        })
-        console.log(temp)
-        suggestions.forEach((suggestion: any, index: any) => {
-            if(suggestion.placeName in temp){
-                suggestions.splice(index, 1);
-            }
+        // suggestions = {
+        //     places: [
+        //         {
+        //             placeName: "Sanjay Gandhi National Park",
+        //             startTime: {
+        //                 hours: "10",
+        //                 minutes: "00",
+        //             },
+        //             duration: {
+        //                 hours: "3",
+        //                 minutes: "00",
+        //             },
+        //         },
+        //         {
+        //             placeName: "Elephanta Caves",
+        //             startTime: {
+        //                 hours: "13",
+        //                 minutes: "00",
+        //             },
+        //             duration: {
+        //                 hours: "2",
+        //                 minutes: "30",
+        //             },
+        //         },
+        //         {
+        //             placeName: "Gateway of India",
+        //             startTime: {
+        //                 hours: "16",
+        //                 minutes: "00",
+        //             },
+        //             duration: {
+        //                 hours: "1",
+        //                 minutes: "30",
+        //             },
+        //         },
+        //     ],
+        // }.places;
+        let temp = data.places.map((e: any) => {
+            return e.placeName;
         });
-        suggestions = suggestions
+        console.log(temp);
+        let suggestion2: any[] = [];
+        suggestions.forEach((suggestion: any, index: any) => {
+            if (!(temp.includes(suggestion.placeName))) {
+                suggestion2.push(suggestion);
+            }else{
+                console.log(suggestion.placeName,'already present')
+            }
+            console.log(suggestion2);
+        });
+        suggestions = suggestion2;
     });
     function numtoMonth(num: any) {
         switch (num) {
@@ -239,13 +280,13 @@
     <CalendarTimeline
         {cards}
         height={calenderHeight}
-        arrivalFlight={{...arrivalFlight,title:"Arrival"}}
+        arrivalFlight={{ ...arrivalFlight, title: "Arrival" }}
         {departureFlight}
     />
     <!-- <div class="flex items-center">
         <div class="h-full border-r border-gray-300 mx-4"></div>
     </div> -->
-    <div class="mx-10 suggestions ">
+    <div class="mx-10 suggestions">
         {#each suggestions as suggestion}
             <button
                 class="card card-body items-center text-center date-div accept-suggestion"

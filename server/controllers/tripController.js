@@ -20,7 +20,6 @@ export async function getTotalPrice(req, res) {
     try {
         //logic here
         const user =  jwt.verify(req.headers['authorization'], process.env.SECRET)
-        console.log(user)
         const id = new ObjectId(user._id)
         const tripData = await tripSchema.findOne({ userId: id })
         const people = parseInt(req.body.people)
@@ -47,7 +46,7 @@ export async function addPlaces(req, res) {
     try {
         //logic here
         const user =jwt.verify(req.headers['authorization'], process.env.SECRET)
-        console.log(user)
+        
         const id = new ObjectId(user._id)
         const tripData = await tripSchema.findOne({ userId: id })
         tripData.places = req.body.places
@@ -87,7 +86,7 @@ export async function getTrip(req, res) {
     try {
         //logic here
         const user = jwt.verify(req.headers['authorization'], process.env.SECRET)
-        console.log(user)
+        
         const id = new ObjectId(user._id)
         const tripData = await tripSchema.findOne({ userId: id })
         res.status(200).json(tripData)
