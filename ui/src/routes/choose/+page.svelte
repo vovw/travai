@@ -39,6 +39,7 @@
         try{
             selectedDataLoading=true
             await axios.post('http://localhost:4000/trip/make-trip/',selectedData,{headers})
+            console.log(selectedData)
         }
         catch(e){
             console.log(e);

@@ -19,7 +19,7 @@ export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeF
         "retFlights" : []
     };
     await clearPastData()
-    await getHotelsdata(citycode, checkinDate, checkoutDate)
+    await getHotelsdata(placeTo, checkinDate, checkoutDate)
     await getMMTFlightData(placeFrom, placeTo, dateDay, dateMonth, dateYear)
     // await getYatraFlightData(placeFrom, placeTo, getDateFormatted(date))
 
