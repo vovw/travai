@@ -1,21 +1,22 @@
 <script>
+    import { goto } from "$app/navigation";
     import "../app.css";
     import Cookies from "js-cookie";
 </script>
 
 <div class="navbar bg-base-100 com-b">
     <div class="navbar-start">
-        <a class="btn btn-ghost text-xl" href="/">TripAI</a>
+        <button class="btn btn-ghost text-xl" on:click={()=> goto('/')}>TripAI</button>
     </div>
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1">
-            <li><a href="/explore">Explore</a></li>
-            <li><a href="/journey">Your journey</a></li>
+            <li><button on:click={()=>goto('/explore')}>Explore</button></li>
+            <li><button on:click={()=>goto('/journey')}>Your journey</button></li>
         </ul>
     </div>
     <div class="navbar-end flex flex-row gap-6">
-        <a class="btn" href="/login">Login</a>
-        <a href="/register" class="btn">Register</a>
+        <button class="btn" on:click={()=>goto('/login')}>Login</button>
+        <button class="btn" on:click={()=>goto('/register')}>Register</button>
     </div>
     {#if Cookies.get("user") != undefined}
         <div class="btn mx-4">

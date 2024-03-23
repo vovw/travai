@@ -1,3 +1,7 @@
+<script>
+    import { goto } from "$app/navigation";
+</script>
+
 <main>
     <div class="com hero min-h-screen">
         <div class="hero-content text-center">
@@ -6,10 +10,10 @@
                 <p class="py-10 text-4xl">
                     Spend less time planning and more on enjoying trips.
                 </p>
-                <a href="/explore">
+                <button on:click={()=>goto('/explore')}>
                     <button class="btn btn-primary">Plan your next trip!</button
                     >
-                </a>
+                </button>
             </div>
         </div>
     </div>

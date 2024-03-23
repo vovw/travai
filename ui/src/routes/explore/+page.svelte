@@ -75,6 +75,8 @@
             };
             console.log(dataToSend);
             localStorage.setItem("answers", JSON.stringify(dataToSend));
+            localStorage.setItem("people", data[3].ans);
+            localStorage.setItem("reason", data[4].ans);
             goto('/choose')
         }
     };

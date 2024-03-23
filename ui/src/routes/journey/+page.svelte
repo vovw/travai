@@ -149,7 +149,9 @@
                 "Content-Type": "application/json",
                 Authorization: Cookies.get("user"),
             },
-            body: JSON.stringify({ jsonData: data }),
+            body: JSON.stringify({
+                jsonData: { ...data, reason: localStorage.getItem("reason") },
+            }),
         });
         const llm = await llmData.json();
         suggestions = llm.places;
@@ -196,10 +198,10 @@
         console.log(temp);
         let suggestion2: any[] = [];
         suggestions.forEach((suggestion: any, index: any) => {
-            if (!(temp.includes(suggestion.placeName))) {
+            if (!temp.includes(suggestion.placeName)) {
                 suggestion2.push(suggestion);
-            }else{
-                console.log(suggestion.placeName,'already present')
+            } else {
+                console.log(suggestion.placeName, "already present");
             }
             console.log(suggestion2);
         });
@@ -253,12 +255,34 @@
         });
     }
     function addEvent(suggestion: any) {
+        let startTime = {
+            hours: "00",
+            minutes: "00",
+        };
+        while (true) {
+            let a = true;
+            for (let i = 0; i < cards.length; i++) {
+                if (
+                    parseInt(cards[i].starttime.hours) ==
+                    parseInt(startTime.hours)
+                ) {
+                    startTime = {
+                        hours: String(parseInt(startTime.hours) + 6),
+                        minutes: "00",
+                    };
+                    a = false;
+                    break;
+                }
+            }
+            if (a) break;
+        }
         cards = cards.concat({
             title: suggestion.placeName,
-            starttime: suggestion.startTime,
+            starttime: startTime,
             y: "",
             id: cards.length + 1,
         });
+        console.log(cards);
         suggestions = suggestions.filter(
             (s: any) => s.placeName !== suggestion.placeName,
         );
