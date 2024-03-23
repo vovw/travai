@@ -21,10 +21,7 @@
         <div class="btn mx-4">
             <div class="avatar">
                 <div class="w-9 rounded-full">
-                    <img
-                        src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                        alt="profile-img"
-                    />
+                    <img src="meow.jpg" alt="profile-img" />
                 </div>
             </div>
             <div class="badge">{Cookies.get("name")}</div>
