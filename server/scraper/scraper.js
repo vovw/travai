@@ -4,11 +4,14 @@ import { getMMTFlightData } from "./makeMyTripScrape.js";
 import { getDateFormatted,convertDateFormat } from "./commons.js";
 import { getYatraFlightData } from "./yatraScrape.js";
 import { clearPastData } from "./clearPastData.js";
+import { getCityCode } from '../llm/cityCode.js';
 
 export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeFrom='Mumbai',placeTo='Pune') => {
     const [citycode, checkinDate, checkoutDate] = ["CTBOM",convertDateFormat(date),convertDateFormat(outDate)]
     const [ dateDay,dateMonth,dateYear ] = date.split(' ');
     const [ outDateDay,outDateMonth,outDateYear ] = outDate.split(' ');
+    const sourceCityCode = await getCityCode(placeFrom);
+    const destinationCityCode = await getCityCode(placeTo);
     const result = {
         "source" : placeFrom,
         "destination" : placeTo,
@@ -19,9 +22,9 @@ export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeF
         "retFlights" : []
     };
     await clearPastData()
-    await getHotelsdata(placeTo, checkinDate, checkoutDate)
-    await getMMTFlightData(placeFrom, placeTo, dateDay, dateMonth, dateYear)
-    // await getYatraFlightData(placeFrom, placeTo, getDateFormatted(date))
+    await getHotelsdata(destinationCityCode, checkinDate, checkoutDate)
+    await getMMTFlightData(sourceCityCode,destinationCityCode, dateDay, dateMonth, dateYear)
+    await getYatraFlightData(sourceCityCode,destinationCityCode, getDateFormatted(date))
 
     const hotels = fs.readFileSync('hotels.json');
     const flights = fs.readFileSync('flights.json');
@@ -29,8 +32,8 @@ export const scrape = async (outDate='29 March 2024',date='28 March 2024',placeF
     result.depFlights = await JSON.parse(flights);
     await clearPastData()
 
-    await getMMTFlightData(placeTo,placeFrom, outDateDay, outDateMonth, outDateYear)
-    // await getYatraFlightData(placeTo, placeFrom, getDateFormatted(outDate))
+    await getMMTFlightData(destinationCityCode,sourceCityCode, outDateDay, outDateMonth, outDateYear)
+    await getYatraFlightData(sourceCityCode, destinationCityCode, getDateFormatted(outDate))
     const flights2 = fs.readFileSync('flights.json');
     result.retFlights = await JSON.parse(flights2);
 
