@@ -6,33 +6,33 @@
 
 <div class="navbar bg-base-100 com-b">
     <div class="navbar-start">
-        <button class="btn btn-ghost text-xl" on:click={()=> goto('/')}>TripAI</button>
+        <button class="btn btn-ghost text-4xl" on:click={()=> goto('/')}>TripAI</button>
     </div>
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1">
-            <li><button on:click={()=>goto('/explore')}>Explore</button></li>
-            <li><button on:click={()=>goto('/journey')}>Your journey</button></li>
+            <li><button on:click={()=>goto('/explore')} class="text-2xl">explore</button></li>
+            <li><button on:click={()=>goto('/journey')} class="text-2xl">journey</button></li>
         </ul>
     </div>
     <div class="navbar-end flex flex-row gap-6">
-        <button class="btn" on:click={()=>goto('/login')}>Login</button>
-        <button class="btn" on:click={()=>goto('/register')}>Register</button>
+        <button class="btn text-2xl" on:click={()=>goto('/login')}>Login</button>
+        <button class="btn text-2xl" on:click={()=>goto('/register')}>Register</button>
     </div>
     {#if Cookies.get("user") != undefined}
         <div class="btn mx-4">
             <div class="avatar">
-                <div class="w-9 rounded-full">
+                <div class="w-11 rounded-full">
                     <img src="meow.jpg" alt="profile-img" />
                 </div>
             </div>
-            <div class="badge">{Cookies.get("name")}</div>
+            <div class="badge text-2xl">{Cookies.get("name")}</div>
         </div>
     {/if}
 
     <label class="swap swap-rotate mx-4">
-        <input type="checkbox" class="theme-controller" value="emerald" />
+        <input type="checkbox" class="theme-controller" value="dracula" />
         <svg
-            class="swap-on h-10 w-10 fill-current"
+            class="swap-off h-10 w-10 fill-current"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             ><path
@@ -40,7 +40,7 @@
             /></svg
         >
         <svg
-            class="swap-off h-10 w-10 fill-current"
+            class="swap-on h-10 w-10 fill-current"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             ><path
