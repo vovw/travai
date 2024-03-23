@@ -143,52 +143,26 @@
         };
 
         calenderHeight = getcalendarheight();
-        // const llmData = await fetch("http://localhost:4000/llm/do-magic", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         Authorization: Cookies.get("user"),
-        //     },
-        //     body: JSON.stringify({ jsonData: data }),
-        // });
-        // const llm = await llmData.json();
-        suggestions = {
-            places: [
-                {
-                    placeName: "Sanjay Gandhi National Park",
-                    startTime: {
-                        hours: "10",
-                        minutes: "00",
-                    },
-                    duration: {
-                        hours: "3",
-                        minutes: "00",
-                    },
-                },
-                {
-                    placeName: "Elephanta Caves",
-                    startTime: {
-                        hours: "13",
-                        minutes: "00",
-                    },
-                    duration: {
-                        hours: "2",
-                        minutes: "30",
-                    },
-                },
-                {
-                    placeName: "Gateway of India",
-                    startTime: {
-                        hours: "16",
-                        minutes: "00",
-                    },
-                    duration: {
-                        hours: "1",
-                        minutes: "30",
-                    },
-                },
-            ],
-        }.places;
+        const llmData = await fetch("http://localhost:4000/llm/do-magic", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: Cookies.get("user"),
+            },
+            body: JSON.stringify({ jsonData: data }),
+        });
+        const llm = await llmData.json();
+        suggestions = llm.places;
+        let temp = data.places.map((e:any)=>{
+            return e.placeName
+        })
+        console.log(temp)
+        suggestions.forEach((suggestion: any, index: any) => {
+            if(suggestion.placeName in temp){
+                suggestions.splice(index, 1);
+            }
+        });
+        suggestions = suggestions
     });
     function numtoMonth(num: any) {
         switch (num) {
@@ -254,10 +228,10 @@
     <div class="grid grid-cols2 gap-4 dates mx-100">
         {#each dates as date}
             <div
-                class="card card-body items-center text-center date-div bg-success rounded"
+                class="card card-body items-center text-center date-div bg-base-200 rounded"
                 style="height: 196px;border:1px solid white;top:10px;"
             >
-                <h2 class="card-title font-bold text-warning">{date}</h2>
+                <h2 class="card-title font-bold text-base-content">{date}</h2>
             </div>
         {/each}
     </div>
@@ -265,13 +239,13 @@
     <CalendarTimeline
         {cards}
         height={calenderHeight}
-        {arrivalFlight}
+        arrivalFlight={{...arrivalFlight,title:"Arrival"}}
         {departureFlight}
     />
     <!-- <div class="flex items-center">
         <div class="h-full border-r border-gray-300 mx-4"></div>
     </div> -->
-    <div class="mx-10 suggestions">
+    <div class="mx-10 suggestions ">
         {#each suggestions as suggestion}
             <button
                 class="card card-body items-center text-center date-div accept-suggestion"
@@ -289,7 +263,7 @@
                 bind:value={currval}
             />
             <button
-                class="btn btn-secondary"
+                class="btn btn-success"
                 on:click|preventDefault={() => {
                     addEvent({
                         placeName: currval,
@@ -302,7 +276,7 @@
                 }}>Add</button
             >
             <button
-                class="btn btn-success"
+                class="btn btn-secondary"
                 on:click|preventDefault={savetoBackend}>Save</button
             >
         </div>
