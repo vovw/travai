@@ -87,7 +87,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg"width="3.5em" height="3.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M20.56 3.91c.59.59.59 1.54 0 2.12l-3.89 3.89l2.12 9.19l-1.41 1.42l-3.88-7.43L9.6 17l.36 2.47l-1.07 1.06l-1.76-3.18l-3.19-1.77L5 14.5l2.5.37L11.37 11L3.94 7.09l1.42-1.41l9.19 2.12l3.89-3.89c.56-.58 1.56-.58 2.12 0"/></svg>
                         <p class="text-2xl">{data.flightName}</p>
                         <p>{data.flightDate}</p>
-                        <a href={data.flightLink}><button class="btn btn-outline btn-primary">Visit</button></a>
+                        <a href={data.flightLink} target="_blank"><button class="btn btn-outline btn-primary">Visit</button></a>
                     </div>
                     <div class="flex flex-col gap-2">
                         <p>{data.site}</p>
@@ -109,7 +109,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg"width="3.5em" height="3.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M20.56 3.91c.59.59.59 1.54 0 2.12l-3.89 3.89l2.12 9.19l-1.41 1.42l-3.88-7.43L9.6 17l.36 2.47l-1.07 1.06l-1.76-3.18l-3.19-1.77L5 14.5l2.5.37L11.37 11L3.94 7.09l1.42-1.41l9.19 2.12l3.89-3.89c.56-.58 1.56-.58 2.12 0"/></svg>
                         <p class="text-2xl">{data.flightName}</p>
                         <p>{data.flightDate}</p>
-                        <a href={data.flightLink}><button class="btn btn-outline btn-primary">Visit</button></a>
+                        <a href={data.flightLink} target="_blank"><button class="btn btn-outline btn-primary">Visit</button></a>
                     </div>
                     <div class="flex flex-col gap-2">
                         <p>{data.site}</p>
@@ -122,7 +122,7 @@
             {/each}
         </div>
     </div>
-    <div class="flex flex-row justify-center">
+    <div class="flex flex-row justify-center my-8">
         {#if selectedDataLoading==false}
         <button class="btn btn-wide btn-outline btn-secondary" on:click={sendSelectedOne}>Confirm</button>
         {/if}
@@ -135,6 +135,51 @@
     </div>
     {/if}
     {#if loading==true}
-    <p>loading........</p>
+    <div class="flex flex-col gap-26">
+        <div class="flex flex-row justify-center mt-4">
+            <p class="text-2xl">As web scrapping is a crucial task it will take atmost 1 minute to load the data</p>
+        </div>
+    <div class="flex flex-row justify-center gap-32 mt-24">
+        <div class="flex flex-col gap-4 w-52">
+            <div class="skeleton h-32 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
+        <div class="flex flex-col gap-4 w-52">
+            <div class="skeleton h-32 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
+        <div class="flex flex-col gap-4 w-52">
+            <div class="skeleton h-32 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
+    </div>
+    <div class="flex flex-row justify-center gap-32 mt-24">
+        <div class="flex flex-col gap-4 w-52">
+            <div class="skeleton h-32 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
+        <div class="flex flex-col gap-4 w-52">
+            <div class="skeleton h-32 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
+        <div class="flex flex-col gap-4 w-52">
+            <div class="skeleton h-32 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
+    </div>
+</div>
+    
     {/if}
 </main>
