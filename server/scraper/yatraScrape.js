@@ -2,12 +2,43 @@ import puppeteer from "puppeteer-extra";
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { saveFlightData } from "./saveFlightData.js";
 import { waitForProccessing,USER_AGENT,PROCESSING_WAIT,getDateFormatted } from "./commons.js";
+import { getCityCode } from "../llm/cityCode.js";
+// import { JSDOM } from 'jsdom';
+
+// function extractFlightDetails(htmlString) {
+//     // Initialize a new DOMParser instance
+//     const dom = new JSDOM(htmlString);
+
+//     // Use the DOM as you would in a browser
+//     const doc = dom.window.document;
+
+
+//     // Extract flight details
+//     const flightAirline = doc.querySelector('.airline-name span').textContent;
+//     const flightName = doc.querySelector('.fl-no span').textContent;
+//     const flightStartTime = doc.querySelector('.dtime .time').textContent.trim();
+//     const flightDuration = doc.querySelector('.duration-stop .du').textContent.trim();
+//     const flightStopData = doc.querySelector('.duration-stop .stop-circle') ? doc.querySelectorAll('.duration-stop .tipsy-content').length + ' Stop(s)' : 'Non-stop';
+//     const flightPrice = doc.querySelector('.fare-summary-tooltip').textContent.trim();
+
+//     // Construct the result object
+//     const result = {
+//         flightAirline,
+//         flightName,
+//         flightStartTime,
+//         flightDuration,
+//         flightStopData,
+//         flightPrice,
+//     };
+
+//     return result;
+// }
 
 
 puppeteer.use(StealthPlugin());
 export const getYatraFlightData = async (
-    placeFrom,
-    placeTo,
+    sourceCityCode,
+    destCityCode,
     dateFormatted
 ) => {
     /** @type {import('puppeteer').Browser} */
@@ -26,43 +57,52 @@ export const getYatraFlightData = async (
     try {
         const page = await browser.newPage();
         page.setUserAgent(USER_AGENT);
-        await page.goto('https://www.yatra.com/flights')
+        // await page.goto('https://www.yatra.com/flights')
           
 
-        // Wait for page to load
-        await page.waitForSelector('label[for="BE_flight_origin_city"]')
-        console.log('Page loaded');
+        // // Wait for page to load
+        // await page.waitForSelector('label[for="BE_flight_origin_city"]')
+        // console.log('Page loaded');
 
-        // Select the source city
-        const fromCity = await page.$('label[for="BE_flight_origin_city"]');
-        await fromCity.click();
-        await page.waitForSelector('#BE_flight_origin_city',{ visible: true });
-        await waitForProccessing()
-        await page.type('#BE_flight_origin_city', placeFrom,{delay: 300});
-        await waitForProccessing()
-        await page.keyboard.press('Enter')
+        // // Select the source city
+        // const fromCity = await page.$('label[for="BE_flight_origin_city"]');
+        // await fromCity.click();
+        // await page.waitForSelector('#BE_flight_origin_city',{ visible: true });
+        // await waitForProccessing()
+        // await page.type('#BE_flight_origin_city', placeFrom,{delay: 300});
+        // await waitForProccessing()
+        // await page.keyboard.press('Enter')
 
-        const toCity = await page.$('label[for="BE_flight_arrival_city"]');
-        await toCity.click();
-        await page.waitForSelector('input[id="BE_flight_arrival_city"]');
-        await page.click('input[id="BE_flight_arrival_city"]')
-        await waitForProccessing()
-        await page.type('input[id="BE_flight_arrival_city"]', placeTo,{delay: 300});
-        await waitForProccessing()
-        await page.keyboard.press('Enter')
+        // const toCity = await page.$('label[for="BE_flight_arrival_city"]');
+        // await toCity.click();
+        // await page.waitForSelector('input[id="BE_flight_arrival_city"]');
+        // await page.click('input[id="BE_flight_arrival_city"]')
+        // await waitForProccessing()
+        // await page.type('input[id="BE_flight_arrival_city"]', placeTo,{delay: 300});
+        // await waitForProccessing()
+        // await page.keyboard.press('Enter')
 
-        // // Select the date
-        const dateInput = await page.$('.datepicker');
-        await dateInput.click()
-        console.log(`Date formatted : ${dateFormatted}`);
-        await page.waitForSelector(`td[data-date="${dateFormatted}"]`)
-        await page.click(`td[data-date="${dateFormatted}"]`)
-        console.log('Date selected');
+        // // // Select the date
+        // const dateInput = await page.$('.datepicker');
+        // await dateInput.click()
+        // console.log(`Date formatted : ${dateFormatted}`);
+        // await page.waitForSelector(`td[data-date="${dateFormatted}"]`)
+        // await page.click(`td[data-date="${dateFormatted}"]`)
+        // console.log('Date selected');
     
-        // // Click on search button
-        await waitForProccessing()
-        await page.click('input[id="BE_flight_flsearch_btn"]');
-        console.log('Search button clicked');
+        // // // Click on search button
+        // await waitForProccessing()
+        // await page.click('input[id="BE_flight_flsearch_btn"]');
+        // console.log('Search button clicked');
+        // const sourceCityCode = await getCityCode(placeFrom)
+        // const destCityCode = await getCityCode(placeTo)
+        const [ dateDay,dateMonth,dateYear ] = dateFormatted.split('/');
+        const url = `https://flight.yatra.com/air-search-ui/dom2/trigger?type=O&viewName=normal&flexi=0&noOfSegments=1&origin=${sourceCityCode}&originCountry=IN&destination=${destCityCode}&destinationCountry=IN&flight_depart_date=${dateDay}%2F${dateMonth}%2F${dateYear}&ADT=4&CHD=0&INF=0&class=Economy&source=fresco-home&unqvaldesktop=1537365164692`
+        console.log(url)
+        // const url = 'https://flight.yatra.com/air-search-ui/dom2/trigger?type=O&viewName=normal&flexi=0&noOfSegments=1&origin=BOM&originCountry=IN&destination=PNQ&destinationCountry=IN&flight_depart_date=28%2F03%2F2024&ADT=4&CHD=0&INF=0&class=Economy&source=fresco-home&unqvaldesktop=1537365164692'
+        await page.goto(url)
+        console.log('Page loaded yatra');
+
 
         // // Check if the flights are loaded
         await page.waitForSelector('div.result-set')
@@ -78,6 +118,9 @@ export const getYatraFlightData = async (
         let gotFlights = 0
         let totalData = []
         for (const flight of flights) {
+            // const flightText = await flight.evaluate(el => el.innerHTML);
+            // const flightDetails = extractFlightDetails(flightText);
+            // console.log(flightDetails);
             try {
                 // airline and name
                 const flightAirlineEl = await flight.$('.airline-name > span');
@@ -93,11 +136,12 @@ export const getYatraFlightData = async (
                 const flightDurationEl = await flight.$('p[autom="durationLabel"]')
                 const flightDuration = await flightDurationEl.evaluate(el => el.textContent);
 
-                const flightPriceEl = await flight.$('.booking-sec > div > div  >p')
-                // await flightPriceEl.evaluate(el => console.log(el.innerHTML))
+                const flightPriceEl = await flight.$('.fare-summary-tooltip')
+                console.log('Price : ',flightPriceEl)
                 const flightPrice = await flightPriceEl.evaluate(el => el.textContent);
+                console.log('Price : ',flightPrice)
 
-                const isStopEl = await flight.$('span.cursor-default')
+                const isStopEl = await flight.$('.cursor-default')
                 const stopData = await isStopEl.evaluate(el => el.textContent);
 
                 console.log(`Flight : ${flightAirline} ${flightName} , 

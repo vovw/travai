@@ -53,6 +53,7 @@
             minutes: "00",
         },
         duration: 1,
+        title: "Arrival",
     };
     export let departureFlight = {
         startdate: "1 Jan",
@@ -136,7 +137,7 @@
         class="empty-place"
     ></div>
     <Event
-        event={{ title: "11 Jan" }}
+        event={{ title: "Arrival" }}
         showflighticon={true}
         color={"top"}
         card={{
@@ -144,11 +145,11 @@
             id: 0,
             y: "",
             starttime: arrivalFlight.starttime,
-            title: "11 Jan",
+            title: arrivalFlight.title,
         }}
     />
     <div
-        class="canvas h-96 bg-secondary"
+        class="canvas h-96 bg-neutral"
         on:dragover={handleDragOver}
         on:drop={handleDrop}
         role="region"
@@ -205,17 +206,9 @@
                 />
             </div>
         {/each}
-        <!-- {#each dateEvents as card}
-                <Event
-                    event={{ title: card.title }}
-                    showflighticon={false}
-                    color={'hide'}
-                    card={{ ...card, duration: 1 }}
-                />
-        {/each} -->
     </div>
     <Event
-        event={{ title: "Arrival" }}
+        event={{ title: "Departure" }}
         showflighticon={true}
         color={"top"}
         card={{
@@ -223,7 +216,7 @@
             id: 0,
             y: "",
             starttime: departureFlight.starttime,
-            title: "",
+            title: "Departure",
         }}
     />
 </div>

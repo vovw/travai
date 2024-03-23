@@ -20,11 +20,11 @@ function constructUrl(cityCode, checkinDate, checkoutDate) {
 }
 
 export const getHotelsdata = async (
-  cityName,
+  cityCode,
   checkinDate,
   checkoutDate
 ) => {
-  const cityCode = await getCityCode(cityName);
+  // const cityCode = await getCityCode(cityName);
   const url = constructUrl(cityCode, checkinDate, checkoutDate);
   console.log(url);
 
@@ -47,7 +47,8 @@ export const getHotelsdata = async (
     // console.log(something);
     const hotelz = await items.evaluate((el) => {
       const hotelName = el.querySelector(".latoBlack").innerText;
-      const hotelPrice = el.querySelector(".priceText").innerText;
+      const hotelPriceText = el.querySelector(".priceText").innerText.split(' ');
+      const hotelPrice = hotelPriceText[hotelPriceText.length - 1];
       const rating = el.querySelector(".ratingText").innerText;
       const location = el.querySelector(".latoRegular").innerText;
       const link = el.querySelector("a").getAttribute("href").slice(2);
