@@ -11,7 +11,7 @@
                     Spend less time planning and more on enjoying trips.
                 </p>
                 <button on:click={()=>goto('/explore')}>
-                    <button class="btn btn-primary">Plan your next trip!</button
+                    <button class="btn btn-primary text-2xl">Plan your next trip!</button
                     >
                 </button>
             </div>
