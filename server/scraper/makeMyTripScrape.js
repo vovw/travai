@@ -25,7 +25,7 @@ export const getMMTFlightData = async (
 
     try {
         const page = await browser.newPage();
-        page.setUserAgent(USER_AGENT);
+        // page.setUserAgent(USER_AGENT);
         // await page.goto('https://www.makemytrip.com/flights/')
 
         // // Wait for page to load
