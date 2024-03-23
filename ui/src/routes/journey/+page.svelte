@@ -267,10 +267,6 @@
         margin-top: 2px;
         margin-bottom: 2px;
     }
-    .inputs {
-        margin-left: 100px;
-        margin-top: 30px;
-    }
     .btn {
         margin-top: 10px;
     }
