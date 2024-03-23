@@ -1,6 +1,7 @@
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { saveHotelData } from "./saveHotelData.js";
+import { getCityCode } from "../llm/cityCode.js";
 puppeteer.use(StealthPlugin());
 
 function constructUrl(cityCode, checkinDate, checkoutDate) {
@@ -9,7 +10,7 @@ function constructUrl(cityCode, checkinDate, checkoutDate) {
   const middleUrl = "&checkout=";
   const endUrl = "&city=";
   const otherParams =
-    "&country=IN&locusId=CTBOM&locusType=city&reference=hotel&roomStayQualifier=2e0e&rsc=1e2e0e&searchText=";
+    `&country=IN&locusId=CT${cityCode}&locusType=city&reference=hotel&roomStayQualifier=2e0e&rsc=1e2e0e&searchText=`;
   // const sortUrl = "&sort=price-asc&type=city";
   const sortUrl = "";
 
@@ -19,11 +20,11 @@ function constructUrl(cityCode, checkinDate, checkoutDate) {
 }
 
 export const getHotelsdata = async (
-  cityCode,
+  cityName,
   checkinDate,
   checkoutDate
 ) => {
-  
+  const cityCode = await getCityCode(cityName);
   const url = constructUrl(cityCode, checkinDate, checkoutDate);
   console.log(url);
 

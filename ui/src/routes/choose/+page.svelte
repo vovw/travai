@@ -38,6 +38,7 @@
     let sendSelectedOne=async()=>{
         try{
             selectedDataLoading=true
+            console.log(selectedData)
             await axios.post('http://localhost:4000/trip/make-trip/',selectedData,{headers})
         }
         catch(e){
@@ -71,7 +72,7 @@
                     </div>
                     <div class="flex flex-row gap-8">
                         <a href={`https://${data.link}`} target="_blank"><button class="btn btn-outline btn-primary">Link</button></a>
-                        <button class="btn btn-outline btn-accent" on:click={()=>selectedData[0]=data}>Choose</button>
+                        <button class={data.hotelName==selectedData[0].hotelName?"btn btn-active btn-accent":"btn btn-outline btn-accent"} on:click={()=>selectedData[0]=data}>Choose</button>
                     </div>
                 </div>
             {/each}
@@ -93,7 +94,7 @@
                         <p>{data.flightDuration}</p>
                         <p>{data.stopInfo}</p>
                         <p class="text-3xl">{data.flightPrice}</p>
-                      <button class="btn btn-outline btn-accent" on:click={()=>selectedData[1]=data}>choose</button>
+                      <button class={data.flightName==selectedData[1].flightName?"btn btn-active btn-accent":"btn btn-outline btn-accent"} on:click={()=>selectedData[1]=data}>choose</button>
                     </div>
                 </div>
             {/each}
@@ -115,7 +116,7 @@
                         <p>{data.flightDuration}</p>
                         <p>{data.stopInfo}</p>
                         <p class="text-3xl">{data.flightPrice}</p>
-                      <button class="btn btn-outline btn-accent" on:click={()=>selectedData[2]=data}>choose</button>
+                      <button class={data.flightName==selectedData[2].flightName?"btn btn-active btn-accent":"btn btn-outline btn-accent"} on:click={()=>selectedData[2]=data}>choose</button>
                     </div>
                 </div>
             {/each}
