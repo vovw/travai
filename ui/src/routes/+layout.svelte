@@ -30,9 +30,9 @@
     {/if}
 
     <label class="swap swap-rotate mx-4">
-        <input type="checkbox" class="theme-controller" value="emerald" />
+        <input type="checkbox" class="theme-controller" value="dracula" />
         <svg
-            class="swap-on h-10 w-10 fill-current"
+            class="swap-off h-10 w-10 fill-current"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             ><path
@@ -40,7 +40,7 @@
             /></svg
         >
         <svg
-            class="swap-off h-10 w-10 fill-current"
+            class="swap-on h-10 w-10 fill-current"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             ><path
