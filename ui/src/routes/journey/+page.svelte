@@ -3,7 +3,11 @@
     import { onMount } from "svelte";
     import Cookies from "js-cookie";
     import { json } from "@sveltejs/kit";
-
+    let placeTo = "Mumbai";
+    if (typeof window !== "undefined") {
+        placeTo = JSON.parse(localStorage.getItem("answers") || "").placeTo;
+    }
+    let chatDetail = '';
     let eventname = "";
     let currval = "";
     let cards = [
@@ -70,12 +74,38 @@
             }
         }
     }
+    async function getChat(){
+        const response = await fetch("http://localhost:4000/llm/about-place", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: Cookies.get("user"),
+            },
+            body: JSON.stringify({
+                place: placeTo,
+            }),
+        });
+        const data = await response.json();
+        typeChat(data.about);
+    }
+    async function typeChat(text: any) {
+        let i = 0;
+        if (i < text.length) {
+            chatDetail += text[i];
+            i++;
+            setTimeout(typeChat, 30, text.substring(i));
+        }
+    }
     // console.log(dates);
     function getcalendarheight() {
         let i = 0;
-        dates.map((date) => {
+        dates.map(() => {
             i++;
         });
+        console.log(dates)
+        console.log(i)
+        console.log(Math.floor(parseInt(arrivalFlight.starttime.hours) / 6))
+        console.log(Math.floor(parseInt(departureFlight.starttime.hours) / 6))
         return (
             Number(i * 200) -
             Math.floor(parseInt(arrivalFlight.starttime.hours) / 6) * 50 -
@@ -84,12 +114,10 @@
         );
     }
     let calenderHeight = 0;
-    $: {
-        calenderHeight = getcalendarheight();
-        console.log("height:", calenderHeight);
-    }
+    $: calenderHeight = getcalendarheight();
     let suggestions: any[] = [];
     onMount(async () => {
+        //getChat();
         const result = await fetch("http://localhost:4000/trip/get-results", {
             method: "POST",
             headers: {
@@ -111,7 +139,7 @@
         // };
         cards = [];
         console.log(data);
-        data.places.forEach((element: any, index: any) => {
+        await data.places.forEach((element: any, index: any) => {
             cards.push({
                 title: element.placeName,
                 starttime: element.startTime,
@@ -132,17 +160,17 @@
         };
         departureFlight = {
             startdate:
-                data.retFlight.flightDate.split("/")[0] +
-                " " +
-                numtoMonth(parseInt(data.retFlight.flightDate.split("/")[1])),
+            data.retFlight.flightDate.split("/")[0] +
+            " " +
+            numtoMonth(parseInt(data.retFlight.flightDate.split("/")[1])),
             starttime: {
                 hours: data.retFlight.flightTime.split(":")[0],
                 minutes: data.retFlight.flightTime.split(":")[1],
             },
             duration: 1,
         };
+        console.log(arrivalFlight,departureFlight)
 
-        calenderHeight = getcalendarheight();
         const llmData = await fetch("http://localhost:4000/llm/do-magic", {
             method: "POST",
             headers: {
@@ -155,8 +183,9 @@
         });
         const llm = await llmData.json();
         suggestions = llm.places;
+        calenderHeight = getcalendarheight();
         // suggestions = {
-        //     places: [
+            //     places: [
         //         {
         //             placeName: "Sanjay Gandhi National Park",
         //             startTime: {
@@ -290,13 +319,13 @@
 </script>
 
 <div class="journey-page px-199 flex flex-row">
-    <div class="grid grid-cols2 gap-4 dates mx-100">
+    <div class="gap-4 dates mx-100">
         {#each dates as date}
             <div
                 class="card card-body items-center text-center date-div bg-base-200 rounded"
                 style="height: 196px;border:1px solid white;top:10px;"
             >
-                <h2 class="card-title font-bold text-base-content">{date}</h2>
+                <h2 class="card-title font-bold text-base-content">{date}</h2>  
             </div>
         {/each}
     </div>
@@ -344,6 +373,12 @@
                 class="btn btn-secondary"
                 on:click|preventDefault={savetoBackend}>Save</button
             >
+        </div>
+    </div>
+    <div class="card w-96 bg-primary bg-info text-base-200 h-full">
+        <div class="card-body">
+            <h2 class="card-title">About {placeTo}</h2>
+            <p class="text-wrap break-all">{chatDetail}</p>
         </div>
     </div>
 </div>
