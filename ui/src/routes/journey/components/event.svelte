@@ -24,17 +24,17 @@
 </script>
 
 <div
-    class="card-body items-center text-center"
+    class="card-body items-center text-center {color==='top'?'bg-accent':''}"
     style="height: {heightofdiv}px; background-color: {color === 'base'
         ? '#282a36'
         : color === 'hide'
           ? '#337DFF'
-          : '#FF5733'}; "
+          : ''}; "
 >
     {#if showflighticon}
         <img src={flight} alt="event" class="w-100" style="height: 34px;" />
     {:else}
-        <h2 class="overflow-wrap break-word word-wrap card-title {color!=='hide'?"font-bold":"font-thin text-black"}" style="{event.title.length>=20?'font-size: 1em;':''}">{event.title}</h2>
+        <h2 class="overflow-wrap break-word word-wrap card-title text-accent {color!=='hide'?"font-bold":"font-thin text-black"}" style="{event.title.length>=20?'font-size: 1em;':''}">{event.title}</h2>
     {/if}
 </div>
 

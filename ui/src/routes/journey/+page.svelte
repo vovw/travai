@@ -55,6 +55,7 @@
         },
         duration: 1,
     };
+    let flight = arrivalFlight;
     $: {
         dates = [];
         for (
@@ -62,7 +63,11 @@
             i <= parseInt(departureFlight.startdate);
             i++
         ) {
-            dates.push(`${i} ${arrivalFlight.startdate.split(" ")[1]}`);
+            dates.push(`${i} ${flight.startdate.split(" ")[1]}`);
+            if ("31 Mar" === `${i} ${flight.startdate.split(" ")[1]}`) {
+                i = 1;
+                flight = departureFlight;
+            }
         }
     }
     // console.log(dates);
@@ -138,16 +143,52 @@
         };
 
         calenderHeight = getcalendarheight();
-        const llmData = await fetch("http://localhost:4000/llm/do-magic", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: Cookies.get("user"),
-            },
-            body: JSON.stringify({ jsonData: data }),
-        });
-        const llm = await llmData.json();
-        suggestions = llm.places;
+        // const llmData = await fetch("http://localhost:4000/llm/do-magic", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: Cookies.get("user"),
+        //     },
+        //     body: JSON.stringify({ jsonData: data }),
+        // });
+        // const llm = await llmData.json();
+        suggestions = {
+            places: [
+                {
+                    placeName: "Sanjay Gandhi National Park",
+                    startTime: {
+                        hours: "10",
+                        minutes: "00",
+                    },
+                    duration: {
+                        hours: "3",
+                        minutes: "00",
+                    },
+                },
+                {
+                    placeName: "Elephanta Caves",
+                    startTime: {
+                        hours: "13",
+                        minutes: "00",
+                    },
+                    duration: {
+                        hours: "2",
+                        minutes: "30",
+                    },
+                },
+                {
+                    placeName: "Gateway of India",
+                    startTime: {
+                        hours: "16",
+                        minutes: "00",
+                    },
+                    duration: {
+                        hours: "1",
+                        minutes: "30",
+                    },
+                },
+            ],
+        }.places;
     });
     function numtoMonth(num: any) {
         switch (num) {
@@ -177,14 +218,14 @@
                 return "Dec";
         }
     }
-    async function savetoBackend(){
-        let toSend:any[] = []
-        cards.forEach((card)=>{
+    async function savetoBackend() {
+        let toSend: any[] = [];
+        cards.forEach((card) => {
             toSend.push({
                 placeName: card.title,
-                startTime: card.starttime
-            })
-        })
+                startTime: card.starttime,
+            });
+        });
         await fetch("http://localhost:4000/trip/add-places", {
             method: "POST",
             headers: {
@@ -192,8 +233,8 @@
                 Authorization: Cookies.get("user"),
             },
             body: JSON.stringify({
-                places: toSend
-            })
+                places: toSend,
+            }),
         });
     }
     function addEvent(suggestion: any) {
@@ -210,13 +251,13 @@
 </script>
 
 <div class="journey-page px-199 flex flex-row">
-    <div class="grid grid-cols2 gap-4 dates">
+    <div class="grid grid-cols2 gap-4 dates mx-100">
         {#each dates as date}
             <div
-                class="card card-body items-center text-center date-div"
-                style="height: 196px;border:1px solid white;border-radius: 0px;top:10px;background-color:#282a36;"
+                class="card card-body items-center text-center date-div bg-success rounded"
+                style="height: 196px;border:1px solid white;top:10px;"
             >
-                <h2 class="card-title font-bold">{date}</h2>
+                <h2 class="card-title font-bold text-warning">{date}</h2>
             </div>
         {/each}
     </div>
@@ -227,6 +268,9 @@
         {arrivalFlight}
         {departureFlight}
     />
+    <!-- <div class="flex items-center">
+        <div class="h-full border-r border-gray-300 mx-4"></div>
+    </div> -->
     <div class="mx-10 suggestions">
         {#each suggestions as suggestion}
             <button
@@ -244,16 +288,23 @@
                 class="input input-bordered w-full max-w-xs"
                 bind:value={currval}
             />
-            <button class="btn btn-secondary" on:click|preventDefault={()=>{addEvent({
-                placeName: currval,
-                startTime: {
-                    hours: "00",
-                    minutes: "00",
-                },
-            })
-            currval = ""
-            }}>Add</button>
-            <button class="btn btn-success" on:click|preventDefault={savetoBackend}>Save</button>
+            <button
+                class="btn btn-secondary"
+                on:click|preventDefault={() => {
+                    addEvent({
+                        placeName: currval,
+                        startTime: {
+                            hours: "00",
+                            minutes: "00",
+                        },
+                    });
+                    currval = "";
+                }}>Add</button
+            >
+            <button
+                class="btn btn-success"
+                on:click|preventDefault={savetoBackend}>Save</button
+            >
         </div>
     </div>
 </div>
@@ -271,7 +322,7 @@
         margin-top: 10px;
     }
     .accept-suggestion {
-        background-color: #337DFF;
+        background-color: #337dff;
         margin-bottom: 5px;
     }
     .suggestions {

@@ -130,7 +130,7 @@
     $: emptyheight = Math.floor(parseInt(arrivalFlight.starttime.hours) / 6) * 50;
 </script>
 
-<div>
+<div style="margin-left: 20px;">
     <div
         style={`height: ${emptyheight}px; width: 100%;`}
         class="empty-place"
@@ -148,7 +148,7 @@
         }}
     />
     <div
-        class="canvas h-96"
+        class="canvas h-96 bg-secondary"
         on:dragover={handleDragOver}
         on:drop={handleDrop}
         role="region"
@@ -232,7 +232,7 @@
 <style>
     .canvas {
         width: 300px;
-        background-color: #337DFF;
+        /* background-color: #337DFF; */
         border: 2px solid #ccc;
         margin-bottom: 20px;
         position: relative;
@@ -240,7 +240,7 @@
     }
 
     .card {
-        background-color: #337DFF;
+        /* background-color: #337DFF; */
         /* outline: 1px solid #ccc; */
         padding: 0px;
         margin-bottom: 10px;
