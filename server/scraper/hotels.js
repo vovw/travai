@@ -45,22 +45,26 @@ export const getHotelsdata = async (
   for (const items of hotel_items) {
     // const something = await flight.evaluate(el => el.innerHTML)
     // console.log(something);
-    const hotelz = await items.evaluate((el) => {
-      const hotelName = el.querySelector(".latoBlack").innerText;
-      const hotelPriceText = el.querySelector(".priceText").innerText.split(' ');
-      const hotelPrice = hotelPriceText[hotelPriceText.length - 1];
-      const rating = el.querySelector(".ratingText").innerText;
-      const location = el.querySelector(".latoRegular").innerText;
-      const link = el.querySelector("a").getAttribute("href").slice(2);
-      return { hotelName, hotelPrice, rating, link, location };
-    });
-    totalData.push(hotelz)
+    try {
+      const hotelz = await items.evaluate((el) => {
+        const hotelName = el.querySelector(".latoBlack").innerText;
+        const hotelPriceText = el.querySelector(".priceText").innerText.split(' ');
+        const hotelPrice = hotelPriceText[hotelPriceText.length - 1];
+        const rating = el.querySelector(".ratingText").innerText;
+        const location = el.querySelector(".latoRegular").innerText;
+        const link = el.querySelector("a").getAttribute("href").slice(2);
+        return { hotelName, hotelPrice, rating, link, location };
+      });
+      totalData.push(hotelz)
 
-    console.log(hotelz);
-    gotHotels += 1
-    if (gotHotels > 3) {
-      break;
-    }
+      console.log(hotelz);
+      gotHotels += 1
+      if (gotHotels > 3) {
+        break;
+      }
+  } catch (e) {
+    console.error(e);
+  }
   }
   console.log(`totalData: ${totalData}`);
   await saveHotelData(totalData);
