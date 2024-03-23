@@ -1,7 +1,10 @@
 <script lang="ts">
+    import { writable } from "svelte/store";
     import Event from "./event.svelte";
     import flight from "./flight.svg";
+    import { onMount } from "svelte";
 
+    let bgText = writable('');
     type Card = {
         id: number;
         title: string;
@@ -9,12 +12,9 @@
             hours: string;
             minutes: string;
         };
-        duration: {
-            hours: string;
-            minutes: string;
-        };
         y: any | undefined;
     };
+
     export let cards: Card[] = [
         {
             id: 1,
@@ -22,10 +22,6 @@
             starttime: {
                 hours: "22",
                 minutes: "00",
-            },
-            duration: {
-                hours: "10",
-                minutes: "30",
             },
             y: "",
         },
@@ -36,10 +32,6 @@
                 hours: "22",
                 minutes: "00",
             },
-            duration: {
-                hours: "10",
-                minutes: "30",
-            },
             y: "",
         },
         {
@@ -48,10 +40,6 @@
             starttime: {
                 hours: "22",
                 minutes: "00",
-            },
-            duration: {
-                hours: "10",
-                minutes: "30",
             },
             y: "",
         },
@@ -64,10 +52,7 @@
             hours: "2",
             minutes: "00",
         },
-        duration: {
-            hours: "10",
-            minutes: "30",
-        },
+        duration: 1,
     };
     export let departureFlight = {
         startdate: "1 Jan",
@@ -75,10 +60,7 @@
             hours: "2",
             minutes: "00",
         },
-        duration: {
-            hours: "10",
-            minutes: "30",
-        },
+        duration: 1,
     };
 
     function handleDragStart(event: any, cardId: any) {
@@ -94,42 +76,58 @@
         const cardId = parseInt(event.dataTransfer.getData("cardId"));
         const droppedCardIndex = cards.findIndex((card) => card.id === cardId);
         if (droppedCardIndex > -1) {
-            const yPos =
-                event.clientY - event.target.getBoundingClientRect().top;
-            // console.log(yPos);
-            cards[droppedCardIndex].y = yPos;
+            const yPos = event.clientY - event.target.getBoundingClientRect().top;
+            cards[droppedCardIndex].y = Math.floor(yPos / 50) * 50;
+            const totalMinutes = (yPos / 200) * 24 * 60;
+            const hours = Math.floor(Math.floor(totalMinutes / 60) / 6) * 6;
+            const minutes = 0;
 
-            // Calculate hours and minutes based on yPos
-            const totalMinutes = (yPos / 100) * 24 * 60; // Convert percentage to total minutes in a day
-            const hours = Math.floor(totalMinutes / 60); // Extract hours
-            const minutes = Math.floor(totalMinutes % 60); // Extract minutes
-
-            // Update starttime properties as strings
-            cards[droppedCardIndex].starttime.hours = String(hours);
-            cards[droppedCardIndex].starttime.minutes = String(minutes);
+            cards[droppedCardIndex].starttime.hours = String(Math.floor(hours / 6) * 6);
+            cards[droppedCardIndex].starttime.minutes = String("00");
             console.log(cards[droppedCardIndex]);
+            cards = cards; // Are you sure you need this line?
         }
     }
+
     function timetopx(time: any) {
         let hours = parseInt(time.hours);
-        let minutes = parseInt(time.minutes);
-        let totalMinutes = hours * 60 + minutes;
+        let totalMinutes = Math.floor(hours / 6) * 6 * 60;
         return (totalMinutes / (24 * 60)) * 200;
+    }
+    let dateEvents:any[] = []
+    let startDateEventsIndex = 4-Math.floor(parseInt(arrivalFlight.starttime.hours)/6)-1
+    $: for(
+        let i = parseInt(arrivalFlight.starttime.hours)<18?parseInt(arrivalFlight.startdate.split(" ")[0]):parseInt(arrivalFlight.startdate.split(" ")[0])+1;
+        i <= parseInt(departureFlight.startdate.split(" ")[0]);
+        i++
+    )
+    {
+        dateEvents.push({
+            title: `${i} ${arrivalFlight.startdate.split(" ")[1]}`,
+            id: -1,
+            duration: 1,
+            starttime: {
+                hours: String(startDateEventsIndex*6+24*(i-parseInt(arrivalFlight.startdate.split(" ")[0]))),
+                minutes: "00",
+            },
+            y: String(Math.floor(startDateEventsIndex+4*(i-parseInt(arrivalFlight.startdate.split(" ")[0])))*50),
+        })
+        // console.log(dateEvents)
     }
 
     $: for (let i = 0; i < cards.length; i++) {
         const hours = parseInt(cards[i].starttime.hours, 10) || 0; // Parse hours as an integer
-        const minutes = parseInt(cards[i].starttime.minutes, 10) || 0; // Parse minutes as an integer
-        const totalMinutes = hours * 60 + minutes; // Calculate total minutes
-        const percentageOfDay = (totalMinutes / (24 * 60)) * 100; // Calculate percentage of the day
+        const minutes = 0; // Parse minutes as an integer
+        const totalMinutes = Math.floor(hours / 6) * 6 * 60 + minutes; // Calculate total minutes
+        const percentageOfDay = (totalMinutes / (24 * 60)) * 200; // Calculate percentage of the day
         cards[i].y = String(percentageOfDay); // Convert percentage to string and assign to y property
     }
+
     $: cardtimes = cards.map((card) => {
-        return timetopx(card.duration);
+        return timetopx("100");
     });
-    $: emptyheight = timetopx(arrivalFlight.starttime);
-    // console.log(cards);
-    // $: console.log(cards)
+
+    $: emptyheight = Math.floor(parseInt(arrivalFlight.starttime.hours) / 6) * 50;
 </script>
 
 <div>
@@ -138,7 +136,7 @@
         class="empty-place"
     ></div>
     <Event
-        event={{ title: "Arrival" }}
+        event={{ title: "11 Jan" }}
         showflighticon={true}
         color={"top"}
         card={{
@@ -146,7 +144,7 @@
             id: 0,
             y: "",
             starttime: arrivalFlight.starttime,
-            title: "",
+            title: "11 Jan",
         }}
     />
     <div
@@ -157,6 +155,37 @@
         aria-label="Draggable Cards Container"
         style={`height: ${height}px;margin-top: 10px;`}
     >
+        <style>
+            .canvas::before,
+            .canvas::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                pointer-events: none; 
+            }
+
+            .canvas::before {
+                background-image: repeating-linear-gradient(
+                    to bottom,
+                    transparent,
+                    transparent 49px,
+                    #ccc 49px,
+                    #ccc 50px,
+                    #337DFF 50px
+                );
+            }
+
+            .canvas::after {
+                /* Example text styles */
+                font-size: 12px;
+                color: #337DFF;
+                padding: 5px;
+                line-height: 1.5;
+            }
+        </style>
         {#each cards as card}
             <div
                 class="card"
@@ -172,10 +201,18 @@
                 <Event
                     event={{ title: card.title }}
                     showflighticon={false}
-                    {card}
+                    card={{ ...card, duration: 1 }}
                 />
             </div>
         {/each}
+        <!-- {#each dateEvents as card}
+                <Event
+                    event={{ title: card.title }}
+                    showflighticon={false}
+                    color={'hide'}
+                    card={{ ...card, duration: 1 }}
+                />
+        {/each} -->
     </div>
     <Event
         event={{ title: "Arrival" }}
@@ -191,10 +228,11 @@
     />
 </div>
 
+
 <style>
     .canvas {
         width: 300px;
-        background-color: #8d8282;
+        background-color: #337DFF;
         border: 2px solid #ccc;
         margin-bottom: 20px;
         position: relative;
@@ -202,7 +240,7 @@
     }
 
     .card {
-        background-color: #fff;
+        background-color: #337DFF;
         /* outline: 1px solid #ccc; */
         padding: 0px;
         margin-bottom: 10px;
@@ -210,6 +248,7 @@
         position: absolute;
         width: 100%;
         text-align: center;
+        border-radius: 0%;
     }
 
     .card {

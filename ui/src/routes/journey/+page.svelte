@@ -5,6 +5,7 @@
     import { json } from "@sveltejs/kit";
 
     let eventname = "";
+    let currval = "";
     let cards = [
         {
             id: 1,
@@ -12,10 +13,6 @@
             starttime: {
                 hours: "22",
                 minutes: "00",
-            },
-            duration: {
-                hours: "70",
-                minutes: "30",
             },
             y: "",
         },
@@ -26,10 +23,6 @@
                 hours: "2",
                 minutes: "00",
             },
-            duration: {
-                hours: "10",
-                minutes: "30",
-            },
             y: "",
         },
         {
@@ -39,36 +32,28 @@
                 hours: "100",
                 minutes: "00",
             },
-            duration: {
-                hours: "14",
-                minutes: "00",
-            },
             y: "",
         },
     ];
-    let dates: any[] = [];
+
+    let dates: string[] = [];
+    let slots: any[] = [];
     let arrivalFlight = {
         startdate: "10 Jan",
         starttime: {
-            hours: "20",
+            hours: "18",
             minutes: "00",
         },
-        duration: {
-            hours: "10",
-            minutes: "00",
-        },
+        duration: 1,
     };
     let eventstartdate = arrivalFlight.startdate.split(" ")[0];
     let departureFlight = {
         startdate: "21 Jan",
         starttime: {
-            hours: "20",
+            hours: "12",
             minutes: "00",
         },
-        duration: {
-            hours: "20",
-            minutes: "30",
-        },
+        duration: 1,
     };
     $: {
         dates = [];
@@ -82,24 +67,21 @@
     }
     // console.log(dates);
     function getcalendarheight() {
-        let start =
-            parseInt(arrivalFlight.starttime.hours) * 60 +
-            parseInt(arrivalFlight.starttime.minutes) +
-            parseInt(arrivalFlight.duration.hours) * 60 +
-            parseInt(arrivalFlight.duration.minutes) +
-            parseInt(arrivalFlight.startdate.split(" ")[0]) * 24 * 60;
-
-        let end =
-            parseInt(departureFlight.starttime.hours) * 60 +
-            parseInt(departureFlight.starttime.minutes) +
-            parseInt(departureFlight.startdate.split(" ")[0]) * 24 * 60;
-        console.log(end, start);
-        return ((end - start) * 100) / 24 / 60;
+        let i = 0;
+        dates.map((date) => {
+            i++;
+        });
+        return (
+            Number(i * 200) -
+            Math.floor(parseInt(arrivalFlight.starttime.hours) / 6) * 50 -
+            50 -
+            (4 - Math.floor(parseInt(departureFlight.starttime.hours) / 6)) * 50
+        );
     }
     let calenderHeight = 0;
     $: {
         calenderHeight = getcalendarheight();
-        console.log(calenderHeight);
+        console.log("height:", calenderHeight);
     }
     let suggestions: any[] = [];
     onMount(async () => {
@@ -111,13 +93,23 @@
             },
         });
         const data = await result.json();
+        // const data = {
+        //     places: [
+        //         {
+        //             placeName: "Goa",
+        //             startTime: {
+        //                 hours: "10",
+        //                 minutes: "00",
+        //             },
+        //         },
+        //     ],
+        // };
         cards = [];
         console.log(data);
         data.places.forEach((element: any, index: any) => {
             cards.push({
                 title: element.placeName,
                 starttime: element.startTime,
-                duration: element.duration,
                 y: "",
                 id: index + 1,
             });
@@ -131,15 +123,7 @@
                 hours: data.depFlight.flightTime.split(":")[0],
                 minutes: data.depFlight.flightTime.split(":")[1],
             },
-            duration: data.depFlight.flightDuration.includes("h")
-                ? {
-                      hours: data.depFlight.flightDuration.split(" ")[0],
-                      minutes: data.depFlight.flightDuration.split(" ")[2],
-                  }
-                : {
-                      hours: "00",
-                      minutes: data.depFlight.flightDuration.split(" ")[0],
-                  },
+            duration: 1,
         };
         departureFlight = {
             startdate:
@@ -150,29 +134,18 @@
                 hours: data.retFlight.flightTime.split(":")[0],
                 minutes: data.retFlight.flightTime.split(":")[1],
             },
-            duration: data.retFlight.flightDuration.includes("h")
-                ? {
-                      hours: data.retFlight.flightDuration.split(" ")[0],
-                      minutes: data.retFlight.flightDuration.split(" ")[2],
-                  }
-                : {
-                      hours: "00",
-                      minutes: data.retFlight.flightDuration.split(" ")[0],
-                  },
+            duration: 1,
         };
 
         calenderHeight = getcalendarheight();
-        const llmData = await fetch(
-            "http://localhost:4000/llm/do-magic",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: Cookies.get("user"),
-                },
-                body: JSON.stringify({jsonData:(data)}),
+        const llmData = await fetch("http://localhost:4000/llm/do-magic", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: Cookies.get("user"),
             },
-        );
+            body: JSON.stringify({ jsonData: data }),
+        });
         const llm = await llmData.json();
         suggestions = llm.places;
     });
@@ -204,11 +177,29 @@
                 return "Dec";
         }
     }
+    async function savetoBackend(){
+        let toSend:any[] = []
+        cards.forEach((card)=>{
+            toSend.push({
+                placeName: card.title,
+                startTime: card.starttime
+            })
+        })
+        await fetch("http://localhost:4000/trip/add-places", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: Cookies.get("user"),
+            },
+            body: JSON.stringify({
+                places: toSend
+            })
+        });
+    }
     function addEvent(suggestion: any) {
         cards = cards.concat({
             title: suggestion.placeName,
             starttime: suggestion.startTime,
-            duration: suggestion.duration,
             y: "",
             id: cards.length + 1,
         });
@@ -219,15 +210,22 @@
 </script>
 
 <div class="journey-page px-199 flex flex-row">
-    <div class="h-24 w-48 dates">
+    <div class="grid grid-cols2 gap-4 dates">
         {#each dates as date}
-            <div class="card card-body items-center text-center date-div">
+            <div
+                class="card card-body items-center text-center date-div"
+                style="height: 196px;border:1px solid white;border-radius: 0px;top:10px;background-color:#282a36;"
+            >
                 <h2 class="card-title font-bold">{date}</h2>
             </div>
         {/each}
-        <!-- <h2 class="card-title font-bold">date here</h2> -->
     </div>
-    <CalendarTimeline {cards} height={calenderHeight} {arrivalFlight} {departureFlight}
+
+    <CalendarTimeline
+        {cards}
+        height={calenderHeight}
+        {arrivalFlight}
+        {departureFlight}
     />
     <div class="mx-10 suggestions">
         {#each suggestions as suggestion}
@@ -240,7 +238,22 @@
         {/each}
 
         <div>
-            <button class="btn btn-primary">Save</button>
+            <input
+                type="text"
+                placeholder="Add a new place to visit"
+                class="input input-bordered w-full max-w-xs"
+                bind:value={currval}
+            />
+            <button class="btn btn-secondary" on:click|preventDefault={()=>{addEvent({
+                placeName: currval,
+                startTime: {
+                    hours: "00",
+                    minutes: "00",
+                },
+            })
+            currval = ""
+            }}>Add</button>
+            <button class="btn btn-success" on:click|preventDefault={savetoBackend}>Save</button>
         </div>
     </div>
 </div>
@@ -251,6 +264,8 @@
     }
     .dates {
         margin: 4px;
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
     .inputs {
         margin-left: 100px;
@@ -260,7 +275,7 @@
         margin-top: 10px;
     }
     .accept-suggestion {
-        background-color: #8d8282;
+        background-color: #337DFF;
         margin-bottom: 5px;
     }
     .suggestions {
