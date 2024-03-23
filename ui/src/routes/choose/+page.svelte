@@ -68,7 +68,7 @@
                     </div>
                     <div class="flex flex-row gap-10 items-center">
                         <p>{data.location}</p>
-                        <p class="text-2xl">{data.hotelPrice}</p>
+                        <p class="text-2xl">{'₹'+data.hotelPrice}</p>
                     </div>
                     <div class="flex flex-row gap-8">
                         <a href={`https://${data.link}`} target="_blank"><button class="btn btn-outline btn-primary">Link</button></a>
@@ -93,7 +93,7 @@
                         <p>{data.site}</p>
                         <p>{data.flightDuration}</p>
                         <p>{data.stopInfo}</p>
-                        <p class="text-3xl">{data.flightPrice}</p>
+                        <p class="text-3xl">{'₹'+data.flightPrice}</p>
                       <button class={data.flightName==selectedData[1].flightName?"btn btn-active btn-accent":"btn btn-outline btn-accent"} on:click={()=>selectedData[1]=data}>choose</button>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                         <p>{data.site}</p>
                         <p>{data.flightDuration}</p>
                         <p>{data.stopInfo}</p>
-                        <p class="text-3xl">{data.flightPrice}</p>
+                        <p class="text-3xl">{'₹'+data.flightPrice}</p>
                       <button class={data.flightName==selectedData[2].flightName?"btn btn-active btn-accent":"btn btn-outline btn-accent"} on:click={()=>selectedData[2]=data}>choose</button>
                     </div>
                 </div>
