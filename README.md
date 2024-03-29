@@ -1,6 +1,3 @@
-hosted - https://travai.vercel.app
-(just frontend backend not deployed)
-
 
 ## tech stack
 - sveltekit for ui
